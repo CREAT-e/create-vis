@@ -15,7 +15,7 @@ PORT = 3000
 Set the environment variable `COPYRIGHT_EVIDENCE_API_CFG` to the path of your configuration file:
 
 ```shell
-$ export CREATE_VIS_CFG=/home/user/copyright-evidence-api/cfg/development.cfg
+$ export CREATE_VIS_CFG=/home/user/create-vis/cfg/development.cfg
 ```
 
 Clone the repository:
