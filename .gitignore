@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Location of database file
+db/
+
+# Development configuration file.
+cfg/development.cfg
