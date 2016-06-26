@@ -12,7 +12,7 @@ DEBUG = True
 PORT = 3000
 ```
 
-Set the environment variable `COPYRIGHT_EVIDENCE_API_CFG` to the path of your configuration file:
+Set the environment variable `CREATE_VIS_CFG` to the path of your configuration file:
 
 ```shell
 $ export CREATE_VIS_CFG=/home/user/create-vis/cfg/development.cfg
