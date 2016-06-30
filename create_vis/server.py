@@ -21,15 +21,15 @@ def chart_test():
     properties = response.json()["properties"]
 
     field = request.args.get('field')
-    field_value = request.args.get('value')
-    aggregate_on = request.args.get('aggregate')
+    print("field is " + field)
 
-    if field_value:
-        values_response = request.get("http://localhost:4000/values/field=" + field_value)
+    if field:
+        values_response = requests.get("http://localhost:4000/values?field=" + field)
+
         field_values = values_response.json()["values"]
-        return render_template("chart.html", properties=properties, values=field_values)
+        return render_template("chart.html", properties=properties, values=field_values, current_field=field)
     else:
-        return render_template("chart.html", properties=properties)
+        return render_template("chart.html", properties=properties, values = [])
 
 
 if __name__ == "__main__":

@@ -1,7 +1,31 @@
-var url = 'http://localhost:4000/studies?filter=funded_by:European%20Commission&fields=evidence_based_policy';
+var fieldDropdownChange = function(sel) {
+  var value = sel.value;
+  window.location.replace("http://localhost:3000/bar_chart?field=" + value);
+};
+
+var changeChart = function(sel) {
+  var field = $(".field").val();
+  var value = $(".value").val();
+  var aggregate_on = $(".aggregate_on").val();
+
+  var url = makeUrlFor(field, value, aggregate_on);
+
+  axios.get(url).then(getLabelsAndValues).then(renderBarChart);
+};
 
 var makeUrlFor = function(field, fieldValue, aggregateOn) {
   return encodeURI("http://localhost:4000/studies?filter=" + field + ":" + fieldValue + "&" + "fields=" + aggregateOn);
+};
+
+var incCount = function(counts, value) {
+  var currentCount = counts[value];
+
+  if (!currentCount) {
+    counts[value] = 1;
+  }
+  else {
+    counts[value] = currentCount + 1;
+  }
 };
 
 var getLabelsAndValues = function(httpResult) {
@@ -14,16 +38,14 @@ var getLabelsAndValues = function(httpResult) {
     if (!values)
       return;
 
-    values.forEach(function(value) {
-      var currentCount = counts[value];
+    if (typeof(values) === "object") {
+      values.forEach(function(value) {
+        incCount(counts, values);
+      });
+    } else {
+      incCount(counts, values);
+    }
 
-      if (!currentCount) {
-        counts[value] = 1;
-      }
-      else {
-        counts[value] = currentCount + 1;
-      }
-    });
   });
 
   var keys = _.keys(counts);

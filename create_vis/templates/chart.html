@@ -2,6 +2,7 @@
 
 {% block content %}
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.js"></script>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
@@ -11,9 +12,37 @@
     </script>
   </head>
   <body>
-    <div style="width:800px ; height:800px ">
+    <div style="width:800px ; height:400px ">
       <canvas id="myChart"/>
-      <p>ffs</p>
+    </div>
+    <div>
+      <span>
+        <label>Field</label>
+        <select class="field" onchange="fieldDropdownChange(this);">
+          {% for prop in properties %}
+            {% if prop == current_field  %}
+              <option selected value={{ prop }} > {{ prop }} </option>
+            {% else %}
+              <option value={{ prop }} > {{ prop }} </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </span>
+      <label>Values</label>
+      <select class="value" onchange="changeChart(this);">
+        {% for val in values %}
+        <option value={{ val }} > {{ val }} </option>
+       {% endfor %}
+      </select>
+      <span>
+        <label>Aggregate on</label>
+        <select onchange="changeChart(this)" class="aggregate_on">
+          {% for prop in properties %}
+          <option value={{ prop }} > {{ prop }} </option>
+         {% endfor %}
+        </select>
+      </span>
+
     </div>
   </body>
 {% endblock %}
