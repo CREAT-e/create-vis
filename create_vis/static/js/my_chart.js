@@ -40,7 +40,7 @@ var getLabelsAndValues = function(httpResult) {
 
     if (typeof(values) === "object") {
       values.forEach(function(value) {
-        incCount(counts, values);
+        incCount(counts, value);
       });
     } else {
       incCount(counts, values);
