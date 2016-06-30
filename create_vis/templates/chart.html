@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <head>
+    <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script src="static/js/my_chart.js"></script>
+    <script type="text/javascript">
+      drawBarChart();
+    </script>
+  </head>
+  <body>
+    <div style="width:800px ; height:800px ">
+      <canvas id="myChart"/>
+      <p>ffs</p>
+    </div>
+  </body>
+{% endblock %}
