@@ -21,7 +21,6 @@ def chart_test():
     properties = response.json()["properties"]
 
     field = request.args.get('field')
-    print("field is " + field)
 
     if field:
         values_response = requests.get("http://localhost:4000/values?field=" + field)
