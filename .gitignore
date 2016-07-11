@@ -93,3 +93,6 @@ db/
 
 # Development configuration file.
 cfg/development.cfg
+
+# IntelliJ
+*.iml

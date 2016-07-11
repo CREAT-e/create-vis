@@ -35,7 +35,7 @@ var changeChart = function(sel) {
 };
 
 var makeUrlFor = function(field, fieldValue, aggregateOn) {
-  return encodeURI("/api/studies?filter=" + field + ":" + fieldValue + "&" + "fields=" + aggregateOn);
+  return encodeURI("/studies?filter=" + field + ":" + fieldValue + "&" + "fields=" + aggregateOn);
 };
 
 var incCount = function(counts, value) {
