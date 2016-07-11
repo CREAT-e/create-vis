@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, current_app, jsonify
 import requests
 from vis.network import network_vis
-
+from vis.shared import shared
 
 app = Flask(__name__)
 app.config.from_envvar("CREATE_VIS_CFG")
 app.register_blueprint(network_vis, url_prefix="/network")
+app.register_blueprint(shared)
 
 
 @app.route("/")
@@ -16,23 +17,6 @@ def index():
 @app.route("/about")
 def about():
     return render_template("about.html")
-
-@app.route("/studies")
-def filtered_studies():
-    # To avoid having to set up a reverse proxy to deal with CORS,
-    # we just proxy requests to the /studies API endpoint in-app for
-    # any javascript files to call
-
-    filter_param = request.args.get("filter")
-    fields_param = request.args.get("fields")
-
-    url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"] + "/studies?filter=" + filter_param + "&fields=" + fields_param
-    try:
-        response = requests.get(url)
-        response_json = response.json()
-        return jsonify(response_json)
-    except requests.RequestException:
-        return []
 
 @app.route("/bar_chart")
 def chart_test():
