@@ -25,20 +25,28 @@ def get_links(studies):
             other_refs = other["references"]
             if set(study_refs) & set(other_refs):
                 links.append({
-                    "source": i,
-                    "target": j
+                    "from": i,
+                    "to": j
                 })
     return links
 
 
 def get_nodes(studies):
-    return [{"title": s["title"]} for s in studies]
+    nodes = []
+    for n, study in enumerate(studies):
+        nodes.append({
+            "id": n,
+            "label": study["title"]
+        })
+    return nodes
 
 
 @network_vis.route("/nodes")
 def network_nodes():
     studies = get_studies()
+    nodes = get_nodes(studies)
+    links = get_links(studies)
     return jsonify({
-        "nodes": get_nodes(studies),
-        "links": get_links(studies)
+        "nodes": nodes,
+        "links": links
     })

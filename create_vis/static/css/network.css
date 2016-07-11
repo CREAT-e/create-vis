@@ -1,3 +1,7 @@
+#vis {
+    height: 450px;
+}
+
 .node {
     stroke: #fff;
     stroke-width: 1px;
