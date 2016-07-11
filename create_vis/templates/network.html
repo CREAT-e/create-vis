@@ -10,6 +10,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
+        <div id="vis-loader" class="loading-spinner"></div>
         <div id="vis" class="col-md-8 col-md-offset-1"></div>
     </div>
     
@@ -23,6 +24,14 @@
     </div>
 
     <hr>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <hr>
 </div>
 {% endblock %}
 
@@ -30,4 +39,14 @@
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
 <script src="{{ url_for('static', filename='js/network.js') }}"></script>
+
+<script>
+ (function() {
+     var d = document, s = d.createElement('script');
+     s.src = '//createvis.disqus.com/embed.js';
+     s.setAttribute('data-timestamp', +new Date());
+     (d.head || d.body).appendChild(s);
+ })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 {% endblock %}
