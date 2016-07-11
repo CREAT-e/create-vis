@@ -47,3 +47,6 @@ body {
   }
 }
 
+.load-hidden {
+    display: none;
+}
