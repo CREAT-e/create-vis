@@ -1,6 +1,6 @@
 var fieldDropdownChange = function(sel) {
   var value = sel.value;
-  window.location.replace("http://localhost:3000/bar_chart?field=" + value);
+  window.location.replace("/bar_chart?field=" + value);
 };
 
 var changeChart = function(sel) {
@@ -14,7 +14,7 @@ var changeChart = function(sel) {
 };
 
 var makeUrlFor = function(field, fieldValue, aggregateOn) {
-  return encodeURI("http://localhost:4000/studies?filter=" + field + ":" + fieldValue + "&" + "fields=" + aggregateOn);
+  return encodeURI("/api/studies?filter=" + field + ":" + fieldValue + "&" + "fields=" + aggregateOn);
 };
 
 var incCount = function(counts, value) {
@@ -54,6 +54,8 @@ var getLabelsAndValues = function(httpResult) {
   return {"keys" : keys, "values": values};
 };
 
+var myChart = null;
+
 var renderBarChart = function(data) {
   var ctx = document.getElementById("myChart");
 
@@ -71,7 +73,10 @@ var renderBarChart = function(data) {
     return trimmedString;
   })
 
-  var myCharts = new Chart(ctx, {
+  if (myChart)
+    myChart.destroy();
+
+  myChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: keys,

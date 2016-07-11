@@ -21,9 +21,9 @@
         <select class="field" onchange="fieldDropdownChange(this);">
           {% for prop in properties %}
             {% if prop == current_field  %}
-              <option selected value={{ prop }} > {{ prop }} </option>
+              <option selected value="{{ prop }}" > {{ prop }} </option>
             {% else %}
-              <option value={{ prop }} > {{ prop }} </option>
+              <option value="{{ prop }}" > {{ prop }} </option>
             {% endif %}
           {% endfor %}
         </select>
@@ -31,14 +31,14 @@
       <label>Values</label>
       <select class="value" onchange="changeChart(this);">
         {% for val in values %}
-        <option value={{ val }} > {{ val }} </option>
+        <option value="{{ val }}" > {{ val }} </option>
        {% endfor %}
       </select>
       <span>
         <label>Aggregate on</label>
         <select onchange="changeChart(this)" class="aggregate_on">
           {% for prop in properties %}
-          <option value={{ prop }} > {{ prop }} </option>
+          <option value="{{ prop }}" > {{ prop }} </option>
          {% endfor %}
         </select>
       </span>
