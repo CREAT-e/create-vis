@@ -8,7 +8,6 @@
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
     <script src="static/js/my_chart.js"></script>
     <script type="text/javascript">
-      drawBarChart();
     </script>
   </head>
   <body>
@@ -31,7 +30,7 @@
       <label>Values</label>
       <select class="value" onchange="changeChart(this);">
         {% for val in values %}
-        <option value="{{ val }}" > {{ val }} </option>
+        <option value="{{ val }}"> {{ val[:25] + "..." }}</option>
        {% endfor %}
       </select>
       <span>

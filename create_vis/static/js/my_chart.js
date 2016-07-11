@@ -1,3 +1,22 @@
+var myChart = null;
+
+var trimKey = function(key) {
+    // bleurgh, do this better
+
+    //trim the string to the maximum length
+    var trimmedString = key.substr(0, 25);
+
+    //re-trim if we are in the middle of a word
+    trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")));
+
+    if (key.length > 25) {
+      return trimmedString + "...";
+    }
+    else {
+      return trimmedString;
+    }
+};
+
 var fieldDropdownChange = function(sel) {
   var value = sel.value;
   window.location.replace("/bar_chart?field=" + value);
@@ -6,11 +25,13 @@ var fieldDropdownChange = function(sel) {
 var changeChart = function(sel) {
   var field = $(".field").val();
   var value = $(".value").val();
-  var aggregate_on = $(".aggregate_on").val();
+  var aggregateOn = $(".aggregate_on").val();
 
-  var url = makeUrlFor(field, value, aggregate_on);
+  var url = makeUrlFor(field, value, aggregateOn);
 
-  axios.get(url).then(getLabelsAndValues).then(renderBarChart);
+  axios.get(url).then(getLabelsAndValues).then(function(data) {
+    renderBarChart(data, field, value, aggregateOn);
+  });
 };
 
 var makeUrlFor = function(field, fieldValue, aggregateOn) {
@@ -54,24 +75,13 @@ var getLabelsAndValues = function(httpResult) {
   return {"keys" : keys, "values": values};
 };
 
-var myChart = null;
-
-var renderBarChart = function(data) {
+var renderBarChart = function(data, field, value, aggregateOn) {
   var ctx = document.getElementById("myChart");
 
   var keys = data.keys;
   var values = data.values;
 
-  keys = keys.map(function(key) {
-    // bleurgh, do this better
-
-    //trim the string to the maximum length
-    var trimmedString = key.substr(0, 20);
-
-    //re-trim if we are in the middle of a word
-    trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")));
-    return trimmedString;
-  })
+  keys = keys.map(trimKey)
 
   if (myChart)
     myChart.destroy();
@@ -81,15 +91,10 @@ var renderBarChart = function(data) {
     data: {
       labels: keys,
       datasets: [{
+        label: aggregateOn + " by " + value + " (" + field + ")" ,
         data: values,
         borderWidth: 1
       }]
     }
   });
 };
-
-var drawBarChart = function() {
-  var url = makeUrlFor("funded_by", "European Commission", "evidence_based_policy")
-
-  axios.get(url).then(getLabelsAndValues).then(renderBarChart);
-}
