@@ -52,7 +52,7 @@ $(document).ready(function() {
             });
         })
         .then(function() {
-            $("#vis-loader").hide();
-            $("#vis").show("slow");
+            $(".loading-spinner").hide();
+            $(".load-hidden").slideDown("slow");
         });
 });
