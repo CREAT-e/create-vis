@@ -5,6 +5,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/network.css') }}">
+<link rel="stylesheet" href="http://visjs.org/dist/vis.css">
 {% endblock css %}
 
 {% block content %}
@@ -41,7 +42,7 @@
 {% endblock %}
 
 {% block js %}
-<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
 <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
 <script src="{{ url_for('static', filename='js/network.js') }}"></script>
 
