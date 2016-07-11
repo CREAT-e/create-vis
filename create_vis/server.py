@@ -20,14 +20,15 @@ def about():
 
 @app.route("/bar_chart")
 def chart_test():
-    #TODO: Parameterise API url via config files
-    response = requests.get(current_app.config["COPYRIGHT_EVIDENCE_API_URL"] + "/properties")
+    api_url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
+
+    response = requests.get(api_url + "/properties")
     properties = response.json()["properties"]
 
     field = request.args.get('field')
 
     if field:
-        values_response = requests.get("http://localhost:4000/values?field=" + field)
+        values_response = requests.get(api_url + "/values?field=" + field)
 
         field_values = values_response.json()["values"]
         return render_template("chart.html", properties=properties, values=field_values, current_field=field)
