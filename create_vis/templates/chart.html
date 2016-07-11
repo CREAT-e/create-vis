@@ -11,37 +11,39 @@
     </script>
   </head>
   <body>
-    <div style="width:800px ; height:800px ">
-      <canvas id="myChart"/>
-    </div>
-    <div>
-      <span>
-        <label>Field</label>
-        <select class="field" onchange="fieldDropdownChange(this);">
-          {% for prop in properties %}
-            {% if prop == current_field  %}
-              <option selected value="{{ prop }}" > {{ prop }} </option>
-            {% else %}
-              <option value="{{ prop }}" > {{ prop }} </option>
-            {% endif %}
-          {% endfor %}
-        </select>
-      </span>
-      <label>Values</label>
-      <select class="value" onchange="changeChart(this);">
-        {% for val in values %}
-        <option value="{{ val }}"> {{ val[:25] + "..." }}</option>
-       {% endfor %}
-      </select>
-      <span>
-        <label>Aggregate on</label>
-        <select onchange="changeChart(this)" class="aggregate_on">
-          {% for prop in properties %}
-          <option value="{{ prop }}" > {{ prop }} </option>
+    <div style="margin: auto">
+      <div style="width:800px ; height:500px; margin: auto">
+        <canvas id="myChart"/>
+      </div>
+      <div style="margin: auto; width: 1000px; margin: 0 auto;">
+        <span>
+          <label>Field</label>
+          <select class="field" onchange="fieldDropdownChange(this);">
+            {% for prop in properties %}
+              {% if prop == current_field  %}
+                <option selected value="{{ prop }}" > {{ prop }} </option>
+              {% else %}
+                <option value="{{ prop }}" > {{ prop }} </option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </span>
+        <label>Values</label>
+        <select class="value" onchange="changeChart(this);">
+          {% for val in values %}
+          <option value="{{ val }}"> {{ val[:25] + "..." }}</option>
          {% endfor %}
         </select>
-      </span>
+        <span>
+          <label>Aggregate on</label>
+          <select onchange="changeChart(this)" class="aggregate_on">
+            {% for prop in properties %}
+            <option value="{{ prop }}" > {{ prop }} </option>
+           {% endfor %}
+          </select>
+        </span>
 
+      </div>
     </div>
   </body>
 {% endblock %}
