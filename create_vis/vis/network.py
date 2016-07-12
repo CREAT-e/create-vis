@@ -72,7 +72,9 @@ def gen_edges(study, studies):
 
 
 def get_edges(nodes, filter_circular=True):
-    edges = reduce(lambda e, o: e + o, [n["edges"] for n in nodes])
+    edges = []
+    for n in nodes:
+        edges += n["edges"]
     if filter_circular:
         non_circular_edges = []
         for edge in edges:
