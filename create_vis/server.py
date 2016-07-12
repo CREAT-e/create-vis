@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, current_app, jsonify
+from flask import Flask, render_template, request, current_app
 import requests
 from vis.network import network_vis
 from vis.shared import shared
@@ -18,6 +18,7 @@ def index():
 def about():
     return render_template("about.html")
 
+
 @app.route("/bar_chart")
 def chart_test():
     api_url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
@@ -31,9 +32,9 @@ def chart_test():
         values_response = requests.get(api_url + "/values?field=" + field)
 
         field_values = values_response.json()["values"]
-        return render_template("chart.html", properties=properties, values=field_values, current_field=field)
-    else:
-        return render_template("chart.html", properties=properties, values = [])
+        return render_template("chart.html", properties=properties,
+                               values=field_values, current_field=field)
+    return render_template("chart.html", properties=properties, values=[])
 
 
 @app.route("/network")

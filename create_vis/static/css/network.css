@@ -1,13 +1,12 @@
+body {
+    padding-top: 64px;
+}
+
 #vis {
-    height: 450px;
+    height: 500px;
+    width: 100%;
 }
 
-.node {
-    stroke: #fff;
-    stroke-width: 1px;
-}
-
-.link {
-    stroke: #999;
-    stroke-opacity: .5;
+.no-margin-top {
+    margin-top: 0;
 }
