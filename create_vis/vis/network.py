@@ -48,7 +48,7 @@ def get_nodes(filter_no_edges=True):
     studies = get_studies()
     nodes = gen_nodes(studies)
     if filter_no_edges:
-        return filter(lambda n: len(n["edges"]) > 0, nodes)
+        return list(filter(lambda n: len(n["edges"]) > 0, nodes))
     return nodes
 
 
