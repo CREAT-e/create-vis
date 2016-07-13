@@ -4,6 +4,7 @@ import requests
 
 shared = Blueprint("shared", __name__)
 
+
 @shared.route("/studies")
 def filtered_studies():
     # To avoid having to set up a reverse proxy to deal with CORS,
@@ -13,7 +14,8 @@ def filtered_studies():
     filter_param = request.args.get("filter")
     fields_param = request.args.get("fields")
 
-    url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"] + "/studies?filter=" + filter_param + "&fields=" + fields_param
+    base = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
+    url = base + "/studies?filter=" + filter_param + "&fields=" + fields_param
     try:
         response = requests.get(url)
         response_json = response.json()

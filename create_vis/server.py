@@ -34,7 +34,8 @@ def chart_test():
         field_values = values_response.json()["values"]
         return render_template("chart.html", properties=properties,
                                values=field_values, current_field=field)
-    return render_template("chart.html", properties=properties, values=[])
+    return render_template("chart.html", properties=properties, values=[],
+                           current_field=None)
 
 
 @app.route("/network")

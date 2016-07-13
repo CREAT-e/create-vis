@@ -19,6 +19,9 @@
         <span>
           <label>Field</label>
           <select class="field" onchange="fieldDropdownChange(this);">
+            {% if not current_field %}
+              <option> -- select a field -- </option>
+            {% endif %}
             {% for prop in properties %}
               {% if prop == current_field  %}
                 <option selected value="{{ prop }}" > {{ prop }} </option>
@@ -31,7 +34,7 @@
         <label>Values</label>
         <select class="value" onchange="changeChart(this);">
           {% for val in values %}
-          <option value="{{ val }}"> {{ val[:25] + "..." }}</option>
+          <option value="{{ val }}"> {{ val }}</option>
          {% endfor %}
         </select>
         <span>

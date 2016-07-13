@@ -34,8 +34,14 @@ var changeChart = function(sel) {
   });
 };
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 var makeUrlFor = function(field, fieldValue, aggregateOn) {
-  return encodeURI("/studies?filter=" + field + ":" + fieldValue + "&" + "fields=" + aggregateOn);
+  var encodedVal = fieldValue.replaceAll(",","\\,");
+  return encodeURI("/studies?filter=" + field + ":" + encodedVal + "&" + "fields=" + aggregateOn);
 };
 
 var incCount = function(counts, value) {
@@ -57,7 +63,7 @@ var getLabelsAndValues = function(httpResult) {
     var values = _.values(study)[0];
 
     if (!values)
-      return;
+      return {keys: [], values: []};
 
     if (typeof(values) === "object") {
       values.forEach(function(value) {
@@ -81,20 +87,25 @@ var renderBarChart = function(data, field, value, aggregateOn) {
   var keys = data.keys;
   var values = data.values;
 
-  keys = keys.map(trimKey)
+  keys = keys.map(trimKey);
 
   if (myChart)
     myChart.destroy();
 
-  myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: keys,
-      datasets: [{
-        label: aggregateOn + " by " + value + " (" + field + ")" ,
-        data: values,
-        borderWidth: 1
-      }]
-    }
-  });
+  if (keys && keys.length > 0) {
+    myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: keys,
+        datasets: [{
+          label: aggregateOn + " by " + value + " (" + field + ")" ,
+          data: values,
+          borderWidth: 1
+        }]
+      }
+    });
+  } else {
+    alert("hihi");
+  }
+
 };
