@@ -19,7 +19,7 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/bar_chart")
+@app.route("/chart")
 def chart_test():
     api_url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
 

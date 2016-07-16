@@ -2,7 +2,7 @@ var myChart = null;
 
 var fieldDropdownChange = function(sel) {
   var value = sel.value;
-  window.location.replace("/bar_chart?field=" + value);
+  window.location.replace("/chart?field=" + value);
 };
 
 var changeChart = function(sel) {
