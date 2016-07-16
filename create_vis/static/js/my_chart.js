@@ -1,22 +1,5 @@
 var myChart = null;
 
-var trimKey = function(key) {
-    // bleurgh, do this better
-
-    //trim the string to the maximum length
-    var trimmedString = key.substr(0, 25);
-
-    //re-trim if we are in the middle of a word
-    trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")));
-
-    if (key.length > 25) {
-      return trimmedString + "...";
-    }
-    else {
-      return trimmedString;
-    }
-};
-
 var fieldDropdownChange = function(sel) {
   var value = sel.value;
   window.location.replace("/bar_chart?field=" + value);
@@ -87,23 +70,24 @@ var renderBarChart = function(data, field, value, aggregateOn) {
   var keys = data.keys;
   var values = data.values;
 
-  keys = keys.map(trimKey);
+  var labelColors = keys.map(randomColor);
 
   if (myChart)
     myChart.destroy();
 
   if (keys && keys.length > 0) {
     myChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'pie',
       data: {
         labels: keys,
         datasets: [{
           label: aggregateOn + " by " + value + " (" + field + ")" ,
           data: values,
-          borderWidth: 1
+          backgroundColor: labelColors
         }]
       }
     });
+
   } else {
     alert("hihi");
   }
