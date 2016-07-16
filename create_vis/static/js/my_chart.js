@@ -10,6 +10,8 @@ var changeChart = function(sel) {
   var value = $(".value").val();
   var aggregateOn = $(".aggregate_on").val();
 
+  if (!field) return;
+
   var url = makeUrlFor(field, value, aggregateOn);
 
   axios.get(url).then(getLabelsAndValues).then(function(data) {
