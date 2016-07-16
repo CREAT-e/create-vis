@@ -87,9 +87,9 @@ var renderBarChart = function(data, field, value, aggregateOn) {
         }]
       }
     });
-
   } else {
-    alert("hihi");
   }
 
 };
+
+window.onload = changeChart;
