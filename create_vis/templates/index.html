@@ -12,9 +12,9 @@
             </a>
         </div>
         <div class="col-md-5">
-            <h3>Study Network</h3>
-            <h4>View connections between studies</h4>
-            <p>A network visualisation of studies which highlights their connections using links such as references and methods.</p>
+            <h3>Shared Reference Network</h3>
+            <h4>An interactive network visualisation</h4>
+            <p>Studies are connected if they share at least one reference.</p>
             <a class="btn btn-primary" href="/network">View<span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
     </div>
@@ -23,8 +23,8 @@
 
     <div class="row">
         <div class="col-md-7">
-            <a href="/bar_chart">
-                <img class="img-responsive" width="700" height="300" src="http://placehold.it/700x300" alt="">
+            <a href="/chart">
+                <img class="img-responsive center" width="300" height="300" src="{{ url_for('static', filename='img/chart.png') }}" alt="chart">
             </a>
         </div>
         <div class="col-md-5">

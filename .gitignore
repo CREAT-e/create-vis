@@ -96,3 +96,5 @@ cfg/development.cfg
 
 # IntelliJ
 *.iml
+
+.DS_Store

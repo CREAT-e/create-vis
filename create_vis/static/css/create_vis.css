@@ -2,6 +2,10 @@ body {
     padding-top: 100px;
 }
 
+.center {
+    margin: 0 auto;
+}
+
 .loading-spinner {
   margin: 60px auto;
   font-size: 10px;
