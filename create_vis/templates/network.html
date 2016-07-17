@@ -1,56 +1,17 @@
-{% extends "base.html" %}
+{% extends "vis.html" %}
 
 {% block title %}Study Network | CREATe Visualisations{% endblock %}
 {% block description %}A network visualisation of CREATe copyright evidence studies.{% endblock %}
 
-{% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/network.css') }}">
-<link rel="stylesheet" href="http://visjs.org/dist/vis.css">
-{% endblock css %}
+{% block heading %}
+Study Reference Connections
+{% endblock %}
 
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div id="vis-loader" class="loading-spinner"></div>        
-    </div>
-</div>
-
-<div class="container load-hidden">
-    <div id="vis"></div>
-    
-    <hr class="no-margin-top">
-
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <h3>Study Reference Connections</h3>
-            <p>This network visualisation shows studies that are linked to one another through sharing one or more of the same references.</p>
-        </div>
-    </div>
-
-    <hr>
-
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div id="disqus_thread"></div>
-        </div>
-    </div>
-
-    <hr>
-</div>
+{% block explanation %}
+This network visualisation shows studies that are linked to one another through sharing one or more of the same references.
 {% endblock %}
 
 {% block js %}
-<script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
-<script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+{{ super() }}
 <script src="{{ url_for('static', filename='js/network.js') }}"></script>
-
-<script>
- (function() {
-     var d = document, s = d.createElement('script');
-     s.src = '//createvis.disqus.com/embed.js';
-     s.setAttribute('data-timestamp', +new Date());
-     (d.head || d.body).appendChild(s);
- })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 {% endblock %}

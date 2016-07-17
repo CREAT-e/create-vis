@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="//visjs.org/dist/vis.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vis.css') }}">
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div id="vis-loader" class="loading-spinner"></div>
+    </div>
+</div>
+
+<div class="container load-hidden">
+    <div id="vis" class="vis"></div>
+
+    <hr class="no-margin-top">
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h3>{% block heading %}{% endblock %}</h3>
+            <p>{% block explanation %}{% endblock %}</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+
+    <hr>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
+<script src="//npmcdn.com/axios/dist/axios.min.js"></script>
+<script>
+ (function() {
+     var d = document, s = d.createElement('script');
+     s.src = '//createvis.disqus.com/embed.js';
+     s.setAttribute('data-timestamp', +new Date());
+     (d.head || d.body).appendChild(s);
+ })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+{% endblock %}
