@@ -23,7 +23,7 @@ def about():
 def chart_test():
     api_url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
 
-    response = requests.get(api_url + "/properties")
+    response = requests.get(api_url + "/aggregatable_properties")
     properties = response.json()["properties"]
 
     field = request.args.get('field')
