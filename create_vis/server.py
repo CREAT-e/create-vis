@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, current_app
-import requests
+from vis.method_network import method_network
 from vis.ref_network import ref_network
 from vis.shared import shared
+import requests
 
 app = Flask(__name__)
 app.config.from_envvar("CREATE_VIS_CFG")
 app.register_blueprint(ref_network, url_prefix="/refnetwork")
+app.register_blueprint(method_network, url_prefix="/methodnetwork")
 app.register_blueprint(shared)
 
 
@@ -39,8 +41,13 @@ def chart_test():
 
 
 @app.route("/refnetwork")
-def network():
+def ref_network():
     return render_template("ref_network.html")
+
+
+@app.route("/methodnetwork")
+def method_network():
+    return render_template("method_network.html")
 
 
 if __name__ == "__main__":
