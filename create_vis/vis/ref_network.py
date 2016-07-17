@@ -1,7 +1,7 @@
 import requests
 from flask import Blueprint, jsonify, current_app, abort
 
-network_vis = Blueprint("network_vis", __name__)
+ref_network = Blueprint("ref_network", __name__)
 
 
 def get_studies():
@@ -88,7 +88,7 @@ def get_edges(nodes, filter_circular=True):
     return edges
 
 
-@network_vis.route("/nodes")
+@ref_network.route("/nodes")
 def network_nodes():
     nodes = get_nodes()
     edges = get_edges(nodes)

@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, current_app
 import requests
-from vis.network import network_vis
+from vis.ref_network import ref_network
 from vis.shared import shared
 
 app = Flask(__name__)
 app.config.from_envvar("CREATE_VIS_CFG")
-app.register_blueprint(network_vis, url_prefix="/network")
+app.register_blueprint(ref_network, url_prefix="/refnetwork")
 app.register_blueprint(shared)
 
 
@@ -38,9 +38,9 @@ def chart_test():
                            current_field=None)
 
 
-@app.route("/network")
+@app.route("/refnetwork")
 def network():
-    return render_template("network.html")
+    return render_template("ref_network.html")
 
 
 if __name__ == "__main__":
