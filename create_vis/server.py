@@ -33,18 +33,26 @@ def chart_test():
 
     field = request.args.get('field')
 
-    if field:
-        values_response = requests.get(api_url + "/values?field=" + field)
+    default_value = ""
+    default_aggregate = ""
+    if not field:
+        # TODO: Make configurable via config file
+        field = "industry"
+        default_value = "Software publishing (including video games)"
+        default_aggregate = "evidence_based_policy"
 
-        field_values = values_response.json()["values"]
+    values_response = requests.get(api_url + "/values?field=" + field)
+    field_values = values_response.json()["values"]
 
-        if field_values:
-            field_values.sort()
+    if field_values:
+        field_values.sort()
 
-        return render_template("chart.html", properties=properties,
-                               values=field_values, current_field=field)
-    return render_template("chart.html", properties=properties, values=[],
-                           current_field=None)
+    return render_template("chart.html",
+                           properties=properties,
+                           values=field_values,
+                           current_field=field,
+                           default_value=default_value,
+                           default_aggregate=default_aggregate)
 
 
 @app.route("/refnetwork")

@@ -17,9 +17,6 @@
         <div>
             <label>Field</label>
             <select class="field" onchange="fieldDropdownChange(this);">
-                {% if not current_field %}
-                <option value=""> -- select a field -- </option>
-                {% endif %}
                 {% for prop in properties %}
                 {% if prop == current_field  %}
                 <option selected value="{{ prop }}" > {{ prop }} </option>
@@ -33,15 +30,27 @@
           <label>Values</label>
           <select class="value" onchange="changeChart(this);">
               {% for val in values %}
-              <option value="{{ val }}"> {{ val }}</option>
+
+              {% if default_value and val == default_value %}
+                <option selected value="{{ val }}"> {{ val }}</option>
+              {% else %}
+                <option value="{{ val }}"> {{ val }}</option>
+              {% endif %}
+
               {% endfor %}
           </select>
         </div>
         <div>
             <label>Aggregate on</label>
             <select onchange="changeChart(this)" class="aggregate_on">
-                {% for prop in properties %}
-                <option value="{{ prop }}" > {{ prop }} </option>
+                {% for val in properties %}
+
+                {% if default_aggregate and val == default_aggregate %}
+                  <option selected value="{{ val }}"> {{ val }}</option>
+                {% else %}
+                  <option value="{{ val }}"> {{ val }}</option>
+
+                {% endif %}
                 {% endfor %}
             </select>
         </div>
