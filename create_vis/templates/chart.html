@@ -1,11 +1,19 @@
-{% extends "base.html" %}
+{% extends "vis.html" %}
 
-{% block content %}
-<div style="margin: auto">
-    <div style="width:800px ; height:500px; margin: auto">
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chart.css') }}">
+{% endblock css %}
+
+{% block title %} Dynamic Chart | CREATe Visualisations {% endblock %}
+{% block description %}A dynamically generated chart from CREATe copyright evidence studies. {% endblock %}
+
+{% block vis %}
+<div class="dynamic-chart-container">
+    <div>
         <canvas id="myChart"/>
     </div>
-    <div style="margin: auto; width: 1000px; margin: 0 auto;">
+    <div class="aggregation-options">
         <span>
             <label>Field</label>
             <select class="field" onchange="fieldDropdownChange(this);">
@@ -38,9 +46,19 @@
 
     </div>
 </div>
+{{ super() }}
+{% endblock %}
+
+{% block heading %}
+Dynamic Chart
+{% endblock %}
+
+{% block explanation %}
+Create a chart by aggregating study data and displaying it in some visualization.
 {% endblock %}
 
 {% block js %}
+{{ super() }}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.4/randomColor.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>

@@ -5,6 +5,16 @@ var fieldDropdownChange = function(sel) {
   window.location.replace("/chart?field=" + value);
 };
 
+var hideSpinner = function() {
+  $(".loading-spinner").hide();
+  $(".load-hidden").show();
+};
+
+var showSpinner = function () {
+  $(".loading-spinner").show();
+  $(".load-hidden").hide();
+};
+
 var changeChart = function(sel) {
   var field = $(".field").val();
   var value = $(".value").val();
@@ -14,7 +24,9 @@ var changeChart = function(sel) {
 
   var url = makeUrlFor(field, value, aggregateOn);
 
+  showSpinner();
   axios.get(url).then(getLabelsAndValues).then(function(data) {
+    hideSpinner();
     renderBarChart(data, field, value, aggregateOn);
   });
 };
@@ -95,3 +107,4 @@ var renderBarChart = function(data, field, value, aggregateOn) {
 };
 
 window.onload = changeChart;
+hideSpinner();
