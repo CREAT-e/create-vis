@@ -14,7 +14,7 @@
         <canvas id="myChart"/>
     </div>
     <div class="aggregation-options">
-        <span>
+        <div>
             <label>Field</label>
             <select class="field" onchange="fieldDropdownChange(this);">
                 {% if not current_field %}
@@ -28,21 +28,23 @@
                 {% endif %}
                 {% endfor %}
             </select>
-        </span>
-        <label>Values</label>
-        <select class="value" onchange="changeChart(this);">
-            {% for val in values %}
-            <option value="{{ val }}"> {{ val }}</option>
-            {% endfor %}
-        </select>
-        <span>
+        </div>
+        <div>
+          <label>Values</label>
+          <select class="value" onchange="changeChart(this);">
+              {% for val in values %}
+              <option value="{{ val }}"> {{ val }}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div>
             <label>Aggregate on</label>
             <select onchange="changeChart(this)" class="aggregate_on">
                 {% for prop in properties %}
                 <option value="{{ prop }}" > {{ prop }} </option>
                 {% endfor %}
             </select>
-        </span>
+        </div>
 
     </div>
 </div>

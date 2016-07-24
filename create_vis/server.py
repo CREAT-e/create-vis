@@ -28,12 +28,19 @@ def chart_test():
     response = requests.get(api_url + "/aggregatable_properties")
     properties = response.json()["properties"]
 
+    if properties:
+        properties.sort()
+
     field = request.args.get('field')
 
     if field:
         values_response = requests.get(api_url + "/values?field=" + field)
 
         field_values = values_response.json()["values"]
+
+        if field_values:
+            field_values.sort()
+
         return render_template("chart.html", properties=properties,
                                values=field_values, current_field=field)
     return render_template("chart.html", properties=properties, values=[],
