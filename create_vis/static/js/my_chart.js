@@ -19,6 +19,7 @@ var changeChart = function(sel) {
   var field = $(".field").val();
   var value = $(".value").val();
   var aggregateOn = $(".aggregate_on").val();
+  var chartType = $(".chart_type").val();
 
   if (!field) return;
 
@@ -27,7 +28,7 @@ var changeChart = function(sel) {
   showSpinner();
   axios.get(url).then(getLabelsAndValues).then(function(data) {
     hideSpinner();
-    renderBarChart(data, field, value, aggregateOn);
+    renderBarChart(chartType, data, field, value, aggregateOn);
   });
 };
 
@@ -78,7 +79,7 @@ var getLabelsAndValues = function(httpResult) {
   return {"keys" : keys, "values": values};
 };
 
-var renderBarChart = function(data, field, value, aggregateOn) {
+var renderBarChart = function(chartType, data, field, value, aggregateOn) {
   var ctx = document.getElementById("myChart");
 
   var keys = data.keys;
@@ -91,7 +92,7 @@ var renderBarChart = function(data, field, value, aggregateOn) {
 
   if (keys && keys.length > 0) {
     myChart = new Chart(ctx, {
-      type: 'pie',
+      type: chartType,
       data: {
         labels: keys,
         datasets: [{
