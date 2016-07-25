@@ -96,7 +96,7 @@ var renderBarChart = function(chartType, data, field, value, aggregateOn) {
       data: {
         labels: keys,
         datasets: [{
-          label: aggregateOn + " by " + value + " (" + field + ")" ,
+          label: value + " by " + aggregateOn,
           data: values,
           backgroundColor: labelColors
         }]
