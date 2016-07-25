@@ -79,6 +79,26 @@ var getLabelsAndValues = function(httpResult) {
   return {"keys" : keys, "values": values};
 };
 
+/**
+ * Applies chart type specific config to the chart data by expanding it
+ * or replacing values.
+*/
+var applyChartTypeConfig = function(type, data) {
+  switch (type) {
+    case "pie" :
+      break;
+    case "line" :
+      var datasets = data['datasets'];
+
+      if (datasets && datasets[0]) {
+        var dataset = datasets[0];
+        dataset["backgroundColor"] = "rgba(255,255,255,0)";
+        dataset["borderColor"] = randomColor();
+      };
+      break;
+  }
+};
+
 var renderChart = function(chartType, data, field, value, aggregateOn) {
   var ctx = document.getElementById("myChart");
 
@@ -90,21 +110,24 @@ var renderChart = function(chartType, data, field, value, aggregateOn) {
   if (myChart)
     myChart.destroy();
 
+  var chartData = {
+    labels: keys,
+    datasets: [{
+      label: value + " by " + aggregateOn,
+      data: values,
+      backgroundColor: labelColors
+    }]
+  };
+
+  applyChartTypeConfig(chartType, chartData);
+
   if (keys && keys.length > 0) {
     myChart = new Chart(ctx, {
       type: chartType,
-      data: {
-        labels: keys,
-        datasets: [{
-          label: value + " by " + aggregateOn,
-          data: values,
-          backgroundColor: labelColors
-        }]
-      }
+      data: chartData
     });
   } else {
   }
-
 };
 
 window.onload = changeChart;
