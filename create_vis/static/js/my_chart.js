@@ -28,7 +28,7 @@ var changeChart = function(sel) {
   showSpinner();
   axios.get(url).then(getLabelsAndValues).then(function(data) {
     hideSpinner();
-    renderBarChart(chartType, data, field, value, aggregateOn);
+    renderChart(chartType, data, field, value, aggregateOn);
   });
 };
 
@@ -79,7 +79,7 @@ var getLabelsAndValues = function(httpResult) {
   return {"keys" : keys, "values": values};
 };
 
-var renderBarChart = function(chartType, data, field, value, aggregateOn) {
+var renderChart = function(chartType, data, field, value, aggregateOn) {
   var ctx = document.getElementById("myChart");
 
   var keys = data.keys;
