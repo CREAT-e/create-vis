@@ -27,6 +27,7 @@ def gen_nodes(studies):
 def gen_node(study, studies):
     return {
         "id": study["id"],
+        "name": study["name"] if "name" in study else "",
         "title": get_title(study),
         "edges": gen_edges(study, studies),
         "color": "#5cb85c"
