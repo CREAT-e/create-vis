@@ -16,13 +16,13 @@ var showSpinner = function () {
 };
 
 var getSelectedOptions = function() {
-  var field = $(".field").val();
-  var value = $(".value").val();
-  var aggregateOn = $(".aggregate_on").val();
-  var chartType = $(".chart_type").val();
+  var field = $("#field").val();
+  var value = $("#value").val();
+  var aggregateOn = $("#aggregate_on").val();
+  var chartType = $("#chart_type").val();
 
-  var maxResults = $(".max_results").val();
-  var sortBy = $(".sort_by").val();
+  var maxResults = $("#max_results").val();
+  var sortBy = $("#sort_by").val();
 
   return {
     "field" : field,
@@ -161,7 +161,7 @@ var makeCSV = function(data) {
 
   var csv = Papa.unparse({
     fields : ["Field", "Value"],
-    data : _.zip(keys,values) 
+    data : _.zip(keys,values)
   });
 
   return csv;

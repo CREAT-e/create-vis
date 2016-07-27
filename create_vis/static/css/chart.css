@@ -1,12 +1,9 @@
 .dynamic-chart-container {
   width: 800px;
-  margin: auto;
+  margin: 0 auto;
+  padding-top: 5rem;
 }
 
-.aggregation-options {
-  margin: auto;
-}
-
-.download-data {
-  float: right;
+.chart-controls > .control {
+    margin-bottom: 1rem;
 }

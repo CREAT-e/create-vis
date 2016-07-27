@@ -13,78 +13,86 @@
     <div>
         <canvas id="myChart"/>
     </div>
-    <div>
-      <a class="download-data" onclick="downloadCSV()" href="#">Export Chart Data</a>
-    </div>
-    <div class="aggregation-options">
-        <div>
-            <label>Field</label>
-            <select class="field" onchange="fieldDropdownChange(this);">
-                {% for prop in properties %}
-                {% if prop == current_field  %}
-                <option selected value="{{ prop }}" > {{ prop }} </option>
-                {% else %}
-                <option value="{{ prop }}" > {{ prop }} </option>
-                {% endif %}
+</div>
+{% endblock %}
+
+{% block controls %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <form class="form-group chart-controls">
+            <div class="control">
+                <label>Field</label>
+                <select id="field" class="form-control" onchange="fieldDropdownChange(this);">
+                    {% for prop in properties %}
+                    {% if prop == current_field  %}
+                    <option selected value="{{ prop }}" > {{ prop }} </option>
+                    {% else %}
+                    <option value="{{ prop }}" > {{ prop }} </option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="control">
+              <label for="value">Values</label>
+              <select id="value" class="form-control" onchange="changeChart(this);">
+                  {% for val in values %}
+
+                  {% if default_value and val == default_value %}
+                    <option selected value="{{ val }}"> {{ val }}</option>
+                  {% else %}
+                    <option value="{{ val }}"> {{ val }}</option>
+                  {% endif %}
+
+                  {% endfor %}
+              </select>
+            </div>
+            <div class="control">
+                <label for="aggregate_on">Aggregate on</label>
+                <select id="aggregate_on" onchange="changeChart(this)" class="form-control">
+                    {% for val in properties %}
+
+                    {% if default_aggregate and val == default_aggregate %}
+                      <option selected value="{{ val }}"> {{ val }}</option>
+                    {% else %}
+                      <option value="{{ val }}"> {{ val }}</option>
+
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div for="control">
+              <label for="chart_type">Chart type</label>
+              <select id="chart_type" onchange="changeChart(this)" class="form-control">
+                <option selected value="pie">Pie</option>
+                <option value="bar">Bar</option>
+                <option value="line">Line</option>
+              </select>
+            </div>
+            <div class="control">
+              <label for="max_results">Maximum results</label>
+              <select id="max_results" onchange="changeChart(this)" class="form-control">
+                  <option value="None">None</option>
+                {% for val in range(1,21) %}
+                  <option value="{{ val }}"> {{val}} </option>
                 {% endfor %}
-            </select>
-        </div>
-        <div>
-          <label>Values</label>
-          <select class="value" onchange="changeChart(this);">
-              {% for val in values %}
-
-              {% if default_value and val == default_value %}
-                <option selected value="{{ val }}"> {{ val }}</option>
-              {% else %}
-                <option value="{{ val }}"> {{ val }}</option>
-              {% endif %}
-
-              {% endfor %}
-          </select>
-        </div>
-        <div>
-            <label>Aggregate on</label>
-            <select onchange="changeChart(this)" class="aggregate_on">
-                {% for val in properties %}
-
-                {% if default_aggregate and val == default_aggregate %}
-                  <option selected value="{{ val }}"> {{ val }}</option>
-                {% else %}
-                  <option value="{{ val }}"> {{ val }}</option>
-
-                {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-          <label> Chart type </label>
-          <select onchange="changeChart(this)" class="chart_type">
-            <option selected value="pie">Pie</option>
-            <option value="bar">Bar</option>
-            <option value="line">Line</option>
-          </select>
-        </div>
-        <div>
-          <label> Maximum results </label>
-          <select onchange="changeChart(this)" class="max_results">
-              <option value="None">None</option>
-            {% for val in range(1,21) %}
-              <option value="{{ val }}"> {{val}} </option>
-            {% endfor %}
-          </select>
-        </div>
-        <div>
-          <label> Sort by </label>
-          <select onchange="changeChart(this)" class="sort_by">
-              <option value="Alphabetical">Alphabetical</option>
-              <option value="Ascending">Ascending</option>
-              <option value="Descending">Descending</option>
-          </select>
-        </div>
+              </select>
+            </div>
+            <div class="control">
+              <label for="sort_by">Sort by</label>
+              <select id="sort_by" onchange="changeChart(this)" class="form-control">
+                  <option value="Alphabetical">Alphabetical</option>
+                  <option value="Ascending">Ascending</option>
+                  <option value="Descending">Descending</option>
+              </select>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="downloadCSV()">
+                <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export
+            </button>
+        </form>
     </div>
 </div>
-{{ super() }}
+
+<hr>
 {% endblock %}
 
 {% block heading %}
