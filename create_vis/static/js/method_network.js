@@ -47,9 +47,28 @@ $(document).ready(function() {
 
             var network = new vis.Network(container, data, options);
             network.fit();
+
+            network.on("selectNode", function (params) {
+                var id = params.nodes[0];
+                var node = getNode(id, graph.nodes);
+                if (node && node.name) {
+                    var wikiUrl = "http://www.copyrightevidence.org/evidence-wiki/index.php/";
+                    var url = wikiUrl + encodeURI(node.name);
+                    window.open(url);
+                }
+            });
         })
         .then(function() {
             $(".loading-spinner").hide();
             $(".load-hidden").show();
         });
 });
+
+function getNode(id, nodes) {
+    for (var i in nodes) {
+        var node = nodes[i];
+        if (node.id === id) {
+            return node;
+        }
+    }
+}
