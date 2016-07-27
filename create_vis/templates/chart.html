@@ -62,6 +62,9 @@
             <option value="line">Line</option>
           </select>
         </div>
+        <div>
+          <a class="download-data" onclick="downloadCSV()" href="#">Export Chart Data</a>
+        </div>
 
     </div>
 </div>
@@ -83,5 +86,6 @@ Create a chart by aggregating study data and displaying it in some visualization
 <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.js"></script>
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
 <script src="static/js/my_chart.js"></script>
 {% endblock %}

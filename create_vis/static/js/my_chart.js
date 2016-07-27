@@ -15,20 +15,29 @@ var showSpinner = function () {
   $(".load-hidden").hide();
 };
 
-var changeChart = function(sel) {
+var getSelectedOptions = function() {
   var field = $(".field").val();
   var value = $(".value").val();
   var aggregateOn = $(".aggregate_on").val();
   var chartType = $(".chart_type").val();
 
-  if (!field) return;
+  return {
+    "field" : field,
+    "value" : value,
+    "aggregateOn": aggregateOn,
+    "chartType" : chartType
+  }
+}
 
-  var url = makeUrlFor(field, value, aggregateOn);
+var changeChart = function(sel) {
+  var options = getSelectedOptions();
+
+  var url = makeUrlFor(options.field, options.value, options.aggregateOn);
 
   showSpinner();
   axios.get(url).then(getLabelsAndValues).then(function(data) {
     hideSpinner();
-    renderChart(chartType, data, field, value, aggregateOn);
+    renderChart(options.chartType, data, options.field, options.value, options.aggregateOn);
   });
 };
 
@@ -99,7 +108,41 @@ var applyChartTypeConfig = function(type, data) {
   }
 };
 
+
+var makeCSV = function(data) {
+  var keys = data.keys;
+  var values = data.values;
+
+  var csv = Papa.unparse({
+    "fields" : keys,
+    data : values
+  });
+
+  return csv;
+};
+
+var downloadCSV = function(csvString) {
+  var options = getSelectedOptions();
+
+  var url = makeUrlFor(options.field, options.value, options.aggregateOn);
+
+  axios.get(url).then(getLabelsAndValues).then(makeCSV).then(function(csvString) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvString));
+    element.setAttribute('download', "chart_export.csv");
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  });
+
+};
+
 var renderChart = function(chartType, data, field, value, aggregateOn) {
+
   var ctx = document.getElementById("myChart");
 
   var keys = data.keys;
