@@ -21,11 +21,16 @@ var getSelectedOptions = function() {
   var aggregateOn = $(".aggregate_on").val();
   var chartType = $(".chart_type").val();
 
+  var maxResults = $(".max_results").val();
+  var sortBy = $(".sort_by").val();
+
   return {
     "field" : field,
     "value" : value,
     "aggregateOn": aggregateOn,
-    "chartType" : chartType
+    "chartType" : chartType,
+    "maxResults" : maxResults,
+    "sortBy" : sortBy
   }
 }
 
@@ -34,16 +39,15 @@ var changeChart = function(sel) {
 
   var url = makeUrlFor(options.field, options.value, options.aggregateOn);
 
+  var sortAndTrim = function(data) {
+    return applySortAndMaxResults(data, options.sortBy, options.maxResults)
+  }
+
   showSpinner();
-  axios.get(url).then(getLabelsAndValues).then(function(data) {
+  axios.get(url).then(getLabelsAndValues).then(sortAndTrim).then(function(data) {
     hideSpinner();
     renderChart(options.chartType, data, options.field, options.value, options.aggregateOn);
   });
-};
-
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
 };
 
 var makeUrlFor = function(field, fieldValue, aggregateOn) {
@@ -60,6 +64,48 @@ var incCount = function(counts, value) {
   else {
     counts[value] = currentCount + 1;
   }
+};
+
+var applySortAndMaxResults = function(data, sortBy, maxResults) {
+
+  var keys = data.keys;
+  var values = data.values;
+
+  var zipped = _.zip(keys, values);
+
+  var sortedAscending = _.sortBy(zipped, function(arr) {
+    return arr[1]
+  });
+
+  // Trim
+  if (maxResults !== "None") {
+    var max = parseInt(maxResults);
+    sortedAscending = _.rest(sortedAscending, (sortedAscending.length - max));
+  }
+
+  var sortedAndTrimmed = null;
+  switch (sortBy) {
+    case "Descending":
+      sortedAndTrimmed = sortedAscending.reverse();
+      break;
+    case "Ascending":
+      sortedAndTrimmed = sortedAscending;
+      break;
+    case "Alphabetical":
+      sortedAndTrimmed = _.sortBy(sortedAscending, function(arr) {
+        return arr[0]
+      });
+      break;
+    default:
+        break;
+  }
+
+  var unzipped = _.unzip(sortedAndTrimmed);
+
+  data.keys = unzipped[0];
+  data.values = unzipped[1];
+
+  return data;
 };
 
 var getLabelsAndValues = function(httpResult) {
@@ -124,9 +170,13 @@ var makeCSV = function(data) {
 var downloadCSV = function(csvString) {
   var options = getSelectedOptions();
 
+  var sortAndTrim = function(data) {
+    return applySortAndMaxResults(data, options.sortBy, options.maxResults)
+  }
+
   var url = makeUrlFor(options.field, options.value, options.aggregateOn);
 
-  axios.get(url).then(getLabelsAndValues).then(makeCSV).then(function(csvString) {
+  axios.get(url).then(getLabelsAndValues).then(sortAndTrim).then(makeCSV).then(function(csvString) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvString));
     element.setAttribute('download', "chart_export.csv");
@@ -171,6 +221,11 @@ var renderChart = function(chartType, data, field, value, aggregateOn) {
     });
   } else {
   }
+};
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
 };
 
 window.onload = changeChart;
