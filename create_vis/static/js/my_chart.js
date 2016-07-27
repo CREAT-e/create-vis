@@ -160,8 +160,8 @@ var makeCSV = function(data) {
   var values = data.values;
 
   var csv = Papa.unparse({
-    "fields" : keys,
-    data : values
+    fields : ["Field", "Value"],
+    data : _.zip(keys,values) 
   });
 
   return csv;
