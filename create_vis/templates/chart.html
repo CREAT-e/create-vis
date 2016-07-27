@@ -13,6 +13,9 @@
     <div>
         <canvas id="myChart"/>
     </div>
+    <div>
+      <a class="download-data" onclick="downloadCSV()" href="#">Export Chart Data</a>
+    </div>
     <div class="aggregation-options">
         <div>
             <label>Field</label>
@@ -63,9 +66,22 @@
           </select>
         </div>
         <div>
-          <a class="download-data" onclick="downloadCSV()" href="#">Export Chart Data</a>
+          <label> Maximum results </label>
+          <select onchange="changeChart(this)" class="max_results">
+              <option value="None">None</option>
+            {% for val in range(1,21) %}
+              <option value="{{ val }}"> {{val}} </option>
+            {% endfor %}
+          </select>
         </div>
-
+        <div>
+          <label> Sort by </label>
+          <select onchange="changeChart(this)" class="sort_by">
+              <option value="Alphabetical">Alphabetical</option>
+              <option value="Ascending">Ascending</option>
+              <option value="Descending">Descending</option>
+          </select>
+        </div>
     </div>
 </div>
 {{ super() }}
