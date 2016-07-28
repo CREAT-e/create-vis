@@ -85,8 +85,15 @@
                   <option value="Descending">Descending</option>
               </select>
             </div>
-            <button class="btn btn-sm btn-primary" onclick="downloadCSV()">
+            <button class="btn btn-sm btn-primary"
+                    onclick="downloadCSV()"
+                    title="Export chart data as CSV">
                 <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export
+            </button>
+            <button class="btn btn-sm btn-primary"
+                    onclick="downloadChartImage()"
+                    title="Download chart image">
+                <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Download
             </button>
         </form>
     </div>

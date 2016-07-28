@@ -191,6 +191,22 @@ var downloadCSV = function(csvString) {
 
 };
 
+var downloadChartImage = function () {
+  var canvas = document.getElementById("myChart");
+  var canvasData = canvas.toDataURL("image/png");
+
+  var image = canvasData.replace("image/png", "image/octet-stream");
+
+  var aLink = document.createElement('a');
+  var evt = document.createEvent("HTMLEvents");
+  evt.initEvent("click");
+  aLink.download = 'chart.png';
+  aLink.href = image;
+  aLink.dispatchEvent(evt);
+
+  document.body.removeChild(aLink);
+};
+
 var renderChart = function(chartType, data, field, value, aggregateOn) {
 
   var ctx = document.getElementById("myChart");
