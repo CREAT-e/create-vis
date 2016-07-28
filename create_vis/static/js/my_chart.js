@@ -167,6 +167,13 @@ var makeCSV = function(data) {
   return csv;
 };
 
+var optionsToFilename = function(options, fileType) {
+  var value = options.value;
+  var aggregateOn = options.aggregateOn;
+
+  return value + "_" + "by" + "_" + aggregateOn + "." + fileType;
+};
+
 var downloadCSV = function(csvString) {
   var options = getSelectedOptions();
 
@@ -179,7 +186,9 @@ var downloadCSV = function(csvString) {
   axios.get(url).then(getLabelsAndValues).then(sortAndTrim).then(makeCSV).then(function(csvString) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvString));
-    element.setAttribute('download', "chart_export.csv");
+
+    var fileName = optionsToFilename(options, ".csv")
+    element.setAttribute('download', fileName);
 
     element.style.display = 'none';
     document.body.appendChild(element);
@@ -192,6 +201,8 @@ var downloadCSV = function(csvString) {
 };
 
 var downloadChartImage = function () {
+  var options = getSelectedOptions();
+
   var canvas = document.getElementById("myChart");
   var canvasData = canvas.toDataURL("image/png");
 
@@ -200,7 +211,10 @@ var downloadChartImage = function () {
   var aLink = document.createElement('a');
   var evt = document.createEvent("HTMLEvents");
   evt.initEvent("click");
-  aLink.download = 'chart.png';
+
+  var fileName = optionsToFilename(options, ".png")
+  aLink.download = fileName;
+
   aLink.href = image;
   aLink.dispatchEvent(evt);
 
