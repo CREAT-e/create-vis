@@ -139,11 +139,23 @@ var getLabelsAndValues = function(httpResult) {
  * or replacing values.
 */
 var applyChartTypeConfig = function(type, data) {
+
+  var lineWrapLabels = function(labels) {
+    return data.labels.map(function(label) {
+      return label.split(" ");
+    });
+  }
+
   switch (type) {
     case "pie" :
       break;
+    case 'bar':
+      // For long labels, this puts each new word on a new line
+      data.labels = lineWrapLabels(data.labels);
+      break;
     case "line" :
       var datasets = data['datasets'];
+      data.labels = lineWrapLabels(data.labels);
 
       if (datasets && datasets[0]) {
         var dataset = datasets[0];
