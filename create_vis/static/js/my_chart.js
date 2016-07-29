@@ -255,10 +255,9 @@ var randomlyColorKeys = function(keys) {
                   "purple",
                   "pink"]
 
-    var cycledColors = [];
-    _.times(10, function() {
-        cycledColors = cycledColors.concat(colors);
-    })
+    var cycledColors = _.flatten(_.times(10, function() {
+        return colors;
+    }));
 
     return cycledColors.map(function(color) {
       return randomColor({luminosity: 'bright', hue: color})
