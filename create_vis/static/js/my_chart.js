@@ -233,6 +233,26 @@ var downloadChartImage = function () {
   document.body.removeChild(aLink);
 };
 
+var randomlyColorKeys = function(keys) {
+
+    var colors = ["red",
+                  "orange",
+                  "yellow",
+                  "blue",
+                  "green",
+                  "purple",
+                  "pink"]
+
+    var cycledColors = [];
+    _.times(10, function() {
+        cycledColors = cycledColors.concat(colors);
+    })
+
+    return cycledColors.map(function(color) {
+      return randomColor({luminosity: 'bright', hue: color})
+    });
+}
+
 var renderChart = function(chartType, data, field, value, aggregateOn) {
 
   var ctx = document.getElementById("myChart");
@@ -240,7 +260,7 @@ var renderChart = function(chartType, data, field, value, aggregateOn) {
   var keys = data.keys;
   var values = data.values;
 
-  var labelColors = keys.map(randomColor);
+  labelColors = randomlyColorKeys(keys);
 
   if (myChart)
     myChart.destroy();
