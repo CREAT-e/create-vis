@@ -44,9 +44,13 @@ var changeChart = function(sel) {
   }
 
   showSpinner();
-  axios.get(url).then(getLabelsAndValues).then(sortAndTrim).then(function(data) {
-    hideSpinner();
-    renderChart(options.chartType, data, options.field, options.value, options.aggregateOn);
+  axios.get(url)
+    .then(getLabelsAndValues)
+    .then(sortAndTrim)
+    .then(function(data) {
+      hideSpinner();
+      renderChart(options.chartType, data, options.field,
+                  options.value, options.aggregateOn);
   });
 };
 
@@ -138,7 +142,7 @@ var getLabelsAndValues = function(httpResult) {
  * Applies chart type specific config to the chart data by expanding it
  * or replacing values.
 */
-var applyChartTypeConfig = function(type, data) {
+var applyChartTypeConfig = function(type, data, opts) {
 
   var lineWrapLabels = function(labels) {
     return data.labels.map(function(label) {
@@ -150,12 +154,15 @@ var applyChartTypeConfig = function(type, data) {
     case "pie" :
       break;
     case 'bar':
+      opts.title.display = false;
       // For long labels, this puts each new word on a new line
       data.labels = lineWrapLabels(data.labels);
       break;
     case "line" :
       var datasets = data['datasets'];
       data.labels = lineWrapLabels(data.labels);
+      opts.title.display = false;
+
 
       if (datasets && datasets[0]) {
         var dataset = datasets[0];
@@ -195,19 +202,24 @@ var downloadCSV = function(csvString) {
 
   var url = makeUrlFor(options.field, options.value, options.aggregateOn);
 
-  axios.get(url).then(getLabelsAndValues).then(sortAndTrim).then(makeCSV).then(function(csvString) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvString));
+  axios.get(url)
+    .then(getLabelsAndValues)
+    .then(sortAndTrim)
+    .then(makeCSV)
+    .then(function(csvString) {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' +
+       encodeURIComponent(csvString));
 
-    var fileName = optionsToFilename(options, ".csv")
-    element.setAttribute('download', fileName);
+      var fileName = optionsToFilename(options, ".csv")
+      element.setAttribute('download', fileName);
 
-    element.style.display = 'none';
-    document.body.appendChild(element);
+      element.style.display = 'none';
+      document.body.appendChild(element);
 
-    element.click();
+      element.click();
 
-    document.body.removeChild(element);
+      document.body.removeChild(element);
   });
 
 };
@@ -253,6 +265,22 @@ var randomlyColorKeys = function(keys) {
     });
 }
 
+var createChartTitle = function(field, value, aggregateOn) {
+
+  var removeUnderscores = function(str) {
+    return str.replaceAll("_", " ");
+  }
+
+  var toTitleCase = function (str) {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  }
+
+  var val = toTitleCase(removeUnderscores(value));
+  var agg = toTitleCase(removeUnderscores(aggregateOn));
+
+  return val.trim() + " by " + agg;
+}
+
 var renderChart = function(chartType, data, field, value, aggregateOn) {
 
   var ctx = document.getElementById("myChart");
@@ -268,18 +296,26 @@ var renderChart = function(chartType, data, field, value, aggregateOn) {
   var chartData = {
     labels: keys,
     datasets: [{
-      label: value + " by " + aggregateOn,
+      label: createChartTitle(field, value, aggregateOn),
       data: values,
       backgroundColor: labelColors
     }]
   };
 
-  applyChartTypeConfig(chartType, chartData);
+  var opts = {
+    title : {
+        display: true,
+        text: createChartTitle(field, value, aggregateOn)
+    }
+  };
+
+  applyChartTypeConfig(chartType, chartData, opts);
 
   if (keys && keys.length > 0) {
     myChart = new Chart(ctx, {
       type: chartType,
-      data: chartData
+      data: chartData,
+      options: opts
     });
   } else {
   }
