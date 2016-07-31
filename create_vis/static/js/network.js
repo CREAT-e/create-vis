@@ -23,7 +23,7 @@ function generateGraph(property, matches) {
     }
 
     return axios.get(url, {
-        timeout: 20000
+        timeout: 30000
     })
     .then(createGraph, handleError);
 }

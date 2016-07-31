@@ -44,8 +44,10 @@ def get_title(study, prop):
         if isinstance(val, list):
             for p in study[prop]:
                 title += p + "<br>"
-        else:
+        elif isinstance(val, bool):
             title += str(val)
+        else:
+            title += val
     return title
 
 
@@ -71,6 +73,7 @@ def gen_edges(study, studies, prop, equality, matches):
         if equality or not isinstance(x, list):
             if x == y:
                 edges.append({
+                    "id": str(study["id"]) + "_" + str(other_study["id"]),
                     "from": study["id"],
                     "to": other_study["id"]
                 })
@@ -78,27 +81,23 @@ def gen_edges(study, studies, prop, equality, matches):
             i = set(x).intersection(y)
             if len(i) >= matches:
                 edges.append({
+                    "id": str(study["id"]) + "_" + str(other_study["id"]),
                     "from": study["id"],
                     "to": other_study["id"]
                 })
     return edges
 
 
-def get_edges(nodes, filter_circular=True):
+def get_edges(nodes):
     edges = []
     for n in nodes:
         edges += n["edges"]
-    if filter_circular:
-        non_circular_edges = []
-        for edge in edges:
-            comp_edge = {
-                "from": edge["to"],
-                "to": edge["from"]
-            }
-            if comp_edge not in non_circular_edges:
-                non_circular_edges.append(edge)
-        return non_circular_edges
-    return edges
+    non_circular_edges = set()
+    for edge in edges:
+        cmp_id = str(edge["to"]) + "_" + str(edge["from"])
+        if cmp_id not in non_circular_edges:
+            non_circular_edges |= {edge["id"]}
+    return [e for e in edges if e["id"] in non_circular_edges]
 
 
 @network.route("/nodes/<prop>")
