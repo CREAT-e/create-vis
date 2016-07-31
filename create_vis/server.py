@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, current_app
+from vis.intersection import intersection
 from vis.network import network
 from vis.shared import shared
 import requests
