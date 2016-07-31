@@ -1,14 +1,21 @@
 from flask import Flask, render_template, request, current_app
-from vis.method_network import method_network
-from vis.ref_network import ref_network
+from vis.network import network
 from vis.shared import shared
 import requests
 
 app = Flask(__name__)
 app.config.from_envvar("CREATE_VIS_CFG")
-app.register_blueprint(ref_network, url_prefix="/refnetwork")
-app.register_blueprint(method_network, url_prefix="/methodnetwork")
+app.register_blueprint(network, url_prefix="/network")
 app.register_blueprint(shared)
+
+
+def get_properties():
+    url = app.config["COPYRIGHT_EVIDENCE_API_URL"] + "/properties"
+    try:
+        response = requests.get(url)
+        return response.json()["properties"]
+    except requests.RequestException:
+        abort(500)
 
 
 @app.route("/")
@@ -23,11 +30,7 @@ def about():
 
 @app.route("/chart")
 def chart_test():
-    api_url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
-
-    response = requests.get(api_url + "/aggregatable_properties")
-    properties = response.json()["properties"]
-
+    properties = get_properties()
     if properties:
         properties.sort()
 
@@ -55,14 +58,11 @@ def chart_test():
                            default_aggregate=default_aggregate)
 
 
-@app.route("/refnetwork")
+@app.route("/network")
 def ref_network():
-    return render_template("ref_network.html")
-
-
-@app.route("/methodnetwork")
-def method_network():
-    return render_template("method_network.html")
+    properties = get_properties()
+    properties.sort()
+    return render_template("network.html", properties=properties)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,52 @@
+{% extends "vis.html" %}
+
+{% block title %}Reference Network | CREATe Visualisations{% endblock %}
+{% block description %}A network visualisation of CREATe copyright evidence studies.{% endblock %}
+
+{% block heading %}
+Network Visualisations
+{% endblock %}
+
+{% block controls %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+            <label for="sel-property">Property:</label>
+            <select class="form-control" id="sel-property">
+                {% for p in properties %}
+                <option>{{ p }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="sel-matches">Join on:</label>
+            <select class="form-control" id="sel-matches">
+                <option>Equality</option>
+                <option>1 Match</option>
+                <option>2 Matches</option>
+                <option>3 Matches</option>
+                <option>4 Matches</option>
+                <option>5 Matches</option>
+            </select>
+        </div>
+
+        <button class="btn btn-sm btn-primary"
+                id="viewBtn"
+                title="View">
+            View
+        </button>
+    </div>
+</div>
+
+<hr>
+{% endblock %}
+
+{% block explanation %}
+Select the join condition for the studies.
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/network.js') }}"></script>
+{% endblock %}

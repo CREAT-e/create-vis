@@ -1,8 +1,30 @@
 $(document).ready(function() {
-    axios.get("/refnetwork/nodes/references?equality&matches=1")
-        .then(createGraph)
-        .then(stopLoading);
+    $("#viewBtn").on("click", handleViewButtonClick);
+    $("#sel-property option:contains('references')").prop("selected", true);
+    $("#sel-matches option:contains('1 Match')").prop("selected", true);
+    $("#viewBtn").click();
 });
+
+function handleViewButtonClick() {
+    startLoading();
+    var property = $("#sel-property").val();
+    var matches = $("#sel-matches").val();
+    generateGraph(property, matches)
+        .then(stopLoading);
+}
+
+function generateGraph(property, matches) {
+    var url = "/network/nodes/" + property;
+    if (matches === "Equality") {
+        url += "?equality";
+    } else {
+        var n = matches.substring(0, 1);
+        url += "?matches=" + n;
+    }
+
+    return axios.get(url)
+        .then(createGraph);
+}
 
 function createGraph(response) {
     var graph = response.data;

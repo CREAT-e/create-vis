@@ -7,15 +7,15 @@
 <div class="container">
     <div class="row">
         <div class="col-md-7">
-            <a href="/refnetwork">
+            <a href="/network">
                 <img class="img-responsive" width="700" height="300" src="{{ url_for('static', filename='img/network.png') }}" alt="network">
             </a>
         </div>
         <div class="col-md-5">
-            <h3>Shared Reference Network</h3>
-            <h4>An interactive network visualisation</h4>
-            <p>Studies are connected if they share at least one reference.</p>
-            <a class="btn btn-primary" href="/refnetwork">View<span class="glyphicon glyphicon-chevron-right"></span></a>
+            <h3>Networks</h3>
+            <h4>Interactive network visualisations</h4>
+            <p>View studies connection by some given criteria.</p>
+            <a class="btn btn-primary" href="/network">View<span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
     </div>
 
@@ -32,22 +32,6 @@
             <h4>Create a chart by dynamically selecting criteria</h4>
             <p>A dynamic chart that shows a count of the studies in a collection with a selected criteria</p>
             <a class="btn btn-primary" href="/chart">View<span class="glyphicon glyphicon-chevron-right"></span></a>
-        </div>
-    </div>
-
-    <hr>
-
-    <div class="row">
-        <div class="col-md-7">
-            <a href="/methodnetwork">
-                <img class="img-responsive center" src="{{ url_for('static', filename='img/method_network.png')}}" alt="Analysis Method Network">
-            </a>
-        </div>
-        <div class="col-md-5">
-            <h3>Shared Analysis Method Network</h3>
-            <h4>An interactive network visualisation</h4>
-            <p>Studies are connected if they share at least one analysis method.</p>
-            <a class="btn btn-primary" href="/methodnetwork">View<span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
     </div>
 
