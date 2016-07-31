@@ -1,5 +1,5 @@
 import requests
-from flask import Blueprint, jsonify, current_app, abort
+from flask import Blueprint, jsonify, current_app, abort, request
 
 ref_network = Blueprint("ref_network", __name__)
 
@@ -20,40 +20,44 @@ def assign_study_ids(studies):
     return studies
 
 
-def gen_nodes(studies, prop):
-    return [gen_node(s, studies, prop) for s in studies]
+def gen_nodes(studies, prop, equality, matches):
+    return [gen_node(s, studies, prop, equality, matches) for s in studies]
 
 
-def gen_node(study, studies, prop):
+def gen_node(study, studies, prop, equality, matches):
     return {
         "id": study["id"],
         "name": study["name"] if "name" in study else "",
         "title": get_title(study, prop),
-        "edges": gen_edges(study, studies, prop),
+        "edges": gen_edges(study, studies, prop, equality, matches),
         "color": "#4582ec"
     }
 
 
 def get_title(study, prop):
     title = "<strong>Title: </strong>" + study["title"]
-    if "references" in study:
+    if prop in study:
         title += "<br>"
         title += "<strong>" + prop + ":</strong>"
         title += "<br>"
-        for ref in study[prop]:
-            title += ref + "<br>"
+        val = study[prop]
+        if isinstance(val, list):
+            for p in study[prop]:
+                title += p + "<br>"
+        else:
+            title += val
     return title
 
 
-def get_nodes(prop, filter_no_edges=True):
+def get_nodes(prop, equality, matches, filter_no_edges=True):
     studies = get_studies()
-    nodes = gen_nodes(studies, prop)
+    nodes = gen_nodes(studies, prop, equality, matches)
     if filter_no_edges:
         return list(filter(lambda n: len(n["edges"]) > 0, nodes))
     return nodes
 
 
-def gen_edges(study, studies, prop):
+def gen_edges(study, studies, prop, equality, matches):
     if prop not in study:
         return []
     edges = []
@@ -62,13 +66,21 @@ def gen_edges(study, studies, prop):
             continue
         if prop not in other_study:
             continue
-        refs = study[prop]
-        other_refs = other_study[prop]
-        if set(refs) & set(other_refs):
-            edges.append({
-                "from": study["id"],
-                "to": other_study["id"]
-            })
+        x = study[prop]
+        y = other_study[prop]
+        if equality:
+            if x == y:
+                edges.append({
+                    "from": study["id"],
+                    "to": other_study["id"]
+                })
+        else:
+            i = set(x).intersection(y)
+            if len(i) >= matches:
+                edges.append({
+                    "from": study["id"],
+                    "to": other_study["id"]
+                })
     return edges
 
 
@@ -91,7 +103,9 @@ def get_edges(nodes, filter_circular=True):
 
 @ref_network.route("/nodes/<prop>")
 def network_nodes(prop):
-    nodes = get_nodes(prop)
+    equality = request.args.get("equality") is not None
+    matches = int(request.args.get("matches", 1))
+    nodes = get_nodes(prop, equality, matches)
     edges = get_edges(nodes)
     return jsonify({
         "nodes": nodes,

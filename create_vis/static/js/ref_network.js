@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    axios.get("/refnetwork/nodes/references")
+    axios.get("/refnetwork/nodes/references?equality&matches=1")
         .then(createGraph)
         .then(stopLoading);
 });
