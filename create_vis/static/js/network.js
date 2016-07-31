@@ -1,9 +1,55 @@
+var dataSet;
+var network;
+
 $(document).ready(function() {
     $("#viewBtn").on("click", handleViewButtonClick);
+    $("#filterBtn").on("click", handleFilterBtnClick);
     $("#sel-property option:contains('references')").prop("selected", true);
     $("#sel-matches option:contains('1 Match')").prop("selected", true);
     $("#viewBtn").click();
 });
+
+function handleFilterBtnClick() {
+    startLoading();
+
+    var str = $("#filterInput").val();
+    if (!str) {
+        var property = $("#sel-property").val();
+        var matches = $("#sel-matches").val();
+        generateGraph(property, matches, filter)
+            .then(stopLoading);
+        return;
+    }
+
+    var tokens = str.split("=");
+    if (tokens.length !== 2) {
+        stopLoading();
+        return;
+    }
+
+    var key = tokens[0];
+    var value = tokens[1];
+
+    var filter = function(node) {
+        if (key in node) {
+            var val = node[key];
+            if ($.isArray(val)) {
+                return $.inArray(value, val);
+            } else if (!isNaN(val)) {
+                return Number(value) == val;
+            }
+
+            return node[key] == value;
+        }
+
+        return false;
+    }
+
+    var property = $("#sel-property").val();
+    var matches = $("#sel-matches").val();
+    generateGraph(property, matches, filter)
+        .then(stopLoading);
+}
 
 function handleViewButtonClick() {
     startLoading();
@@ -13,7 +59,7 @@ function handleViewButtonClick() {
         .then(stopLoading);
 }
 
-function generateGraph(property, matches) {
+function generateGraph(property, matches, filter) {
     var url = "/network/nodes/" + property;
     if (matches === "Equality") {
         url += "?equality";
@@ -23,9 +69,11 @@ function generateGraph(property, matches) {
     }
 
     return axios.get(url, {
-        timeout: 20000
+        timeout: 30000
     })
-    .then(createGraph, handleError);
+    .then(function(response) {
+        createGraph(response, filter);
+    }, handleError)
 }
 
 function handleError() {
@@ -37,12 +85,16 @@ function handleError() {
     }, 5000);
 }
 
-function createGraph(response) {
+function createGraph(response, filter) {
     var graph = response.data;
 
-    var data = {
-        nodes: graph.nodes,
-        edges: graph.edges
+    if (filter) {
+        graph.nodes = graph.nodes.filter(filter);
+    }
+
+    dataSet = {
+        nodes: new vis.DataSet(graph.nodes),
+        edges: new vis.DataSet(graph.edges)
     };
 
     var options = {
@@ -81,7 +133,7 @@ function createGraph(response) {
     };
 
     var container = document.getElementById("vis");
-    var network = new vis.Network(container, data, options);
+    network = new vis.Network(container, dataSet, options);
     network.fit();
     network.on("selectNode", function (params) {
         var id = params.nodes[0];
