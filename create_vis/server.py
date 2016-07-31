@@ -28,8 +28,13 @@ def about():
     return render_template("about.html")
 
 
+@app.route("/3d_chart")
+def three_dimensional_chart():
+    props = get_properties()
+    return render_template("three_dimensional.html", properties=props)
+
 @app.route("/chart")
-def chart_test():
+def chart():
     properties = get_properties()
     if properties:
         properties.sort()

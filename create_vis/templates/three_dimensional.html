@@ -1,0 +1,59 @@
+{% extends "vis.html" %}
+
+{% block title %} 3D Chart | CREATe Visualisations {% endblock %}
+{% block description %}A dynamically generated chart showing the intersection between studies of 3 criteria {% endblock %}
+
+{% block vis %}
+
+{% endblock %}
+
+{% block controls %}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <form class="form-group chart-controls">
+          <div class="control">
+              <label>Category 1</label>
+              <select id="category1" class="form-control" onchange="fieldDropdownChange(this);">
+                  {% for prop in properties %}
+                  <option selected value="{{ prop }}" > {{ prop }} </option>
+                  <option value="{{ prop }}" > {{ prop }} </option>
+                  {% endfor %}
+              </select>
+          </div>
+          <div class="control">
+              <label>Category 1</label>
+              <select id="category2" class="form-control" onchange="fieldDropdownChange(this);">
+                  {% for prop in properties %}
+                  <option selected value="{{ prop }}" > {{ prop }} </option>
+                  <option value="{{ prop }}" > {{ prop }} </option>
+                  {% endfor %}
+              </select>
+          </div>
+          <div class="control">
+              <label>Category 1</label>
+              <select id="category3" class="form-control" onchange="fieldDropdownChange(this);">
+                  {% for prop in properties %}
+                  <option selected value="{{ prop }}" > {{ prop }} </option>
+                  <option value="{{ prop }}" > {{ prop }} </option>
+                  {% endfor %}
+              </select>
+          </div>
+          </form>
+        </div>
+</div>
+
+{% endblock %}
+
+{% block heading %}
+3D Chart
+{% endblock %}
+
+{% block explanation %}
+A dynamically generated chart showing the intersection between studies of 3 categories
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+<script src="static/js/3d_chart.js"></script>
+{% endblock %}
