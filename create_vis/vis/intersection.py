@@ -62,4 +62,6 @@ def intersections():
     data.sort(key=lambda a : a['style'], reverse=True)
     data = [d for d in data if d['style'] > 0]
 
+    data = data[:20]
+
     return jsonify({'results' : data})

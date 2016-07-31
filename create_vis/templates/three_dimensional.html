@@ -4,7 +4,7 @@
 {% block description %}A dynamically generated chart showing the intersection between studies of 3 criteria {% endblock %}
 
 {% block vis %}
-
+<div id="3d_graph"></div>
 {% endblock %}
 
 {% block controls %}
@@ -14,7 +14,7 @@
         <form class="form-group chart-controls">
           <div class="control">
               <label>Category 1</label>
-              <select id="category1" class="form-control" onchange="fieldDropdownChange(this);">
+              <select id="category1" class="form-control">
                   {% for prop in properties %}
                   <option value="{{ prop }}" > {{ prop }} </option>
                   {% endfor %}
@@ -22,7 +22,7 @@
           </div>
           <div class="control">
               <label>Category 2</label>
-              <select id="category2" class="form-control" onchange="fieldDropdownChange(this);">
+              <select id="category2" class="form-control">
                   {% for prop in properties %}
                   <option value="{{ prop }}" > {{ prop }} </option>
                   {% endfor %}
@@ -30,13 +30,18 @@
           </div>
           <div class="control">
               <label>Category 3</label>
-              <select id="category3" class="form-control" onchange="fieldDropdownChange(this);">
+              <select id="category3" class="form-control">
                   {% for prop in properties %}
                   <option value="{{ prop }}" > {{ prop }} </option>
                   {% endfor %}
               </select>
           </div>
           </form>
+          <button class="btn btn-sm btn-primary"
+                  id="viewBtn"
+                  title="View">
+              View
+          </button>
         </div>
 </div>
 
