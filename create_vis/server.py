@@ -30,7 +30,11 @@ def about():
 
 @app.route("/chart")
 def chart_test():
-    properties = get_properties()
+    api_url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
+
+    response = requests.get(api_url + "/aggregatable_properties")
+    properties = response.json()["properties"]
+
     if properties:
         properties.sort()
 
@@ -60,7 +64,15 @@ def chart_test():
 
 @app.route("/network")
 def ref_network():
-    properties = get_properties()
+    blacklist = [
+        "comparative",
+        "cross_country",
+        "evidence_based_policy",
+        "government_or_policy",
+        "literative_review",
+
+    ]
+    properties = [p for p in get_properties() if p not in blacklist]
     properties.sort()
     return render_template("network.html", properties=properties)
 

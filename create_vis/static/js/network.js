@@ -22,8 +22,19 @@ function generateGraph(property, matches) {
         url += "?matches=" + n;
     }
 
-    return axios.get(url)
-        .then(createGraph);
+    return axios.get(url, {
+        timeout: 20000
+    })
+    .then(createGraph, handleError);
+}
+
+function handleError() {
+    stopLoading();
+
+    $(".alert").slideDown();
+    setTimeout(function() {
+        $(".alert").slideUp();
+    }, 5000);
 }
 
 function createGraph(response) {

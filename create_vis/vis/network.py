@@ -45,7 +45,7 @@ def get_title(study, prop):
             for p in study[prop]:
                 title += p + "<br>"
         else:
-            title += val
+            title += str(val)
     return title
 
 
