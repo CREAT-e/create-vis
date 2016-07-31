@@ -45,7 +45,7 @@ def get_title(study, prop):
             for p in study[prop]:
                 title += p + "<br>"
         else:
-            title += val
+            title += str(val)
     return title
 
 
@@ -68,7 +68,7 @@ def gen_edges(study, studies, prop, equality, matches):
             continue
         x = study[prop]
         y = other_study[prop]
-        if equality:
+        if equality or not isinstance(x, list):
             if x == y:
                 edges.append({
                     "from": study["id"],
