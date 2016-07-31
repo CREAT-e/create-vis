@@ -59,4 +59,7 @@ def intersections():
                 data_obj = {'x' : cat1_val, 'y': cat2_val, 'z': cat3_val, 'count': count}
                 data.append(data_obj)
 
+    data.sort(key=lambda a : a['count'], reverse=True)
+    data = filter(data, lambda a : a['count'] > 0)
+
     return jsonify({'results' : data})
