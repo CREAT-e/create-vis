@@ -23,6 +23,7 @@ function handleFilterBtnClick() {
 
     var tokens = str.split("=");
     if (tokens.length !== 2) {
+        stopLoading();
         return;
     }
 
