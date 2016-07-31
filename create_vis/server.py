@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config.from_envvar("CREATE_VIS_CFG")
 app.register_blueprint(network, url_prefix="/network")
 app.register_blueprint(shared)
+app.register_blueprint(intersection)
 
 
 def get_properties():

@@ -1,3 +1,12 @@
+var hideSpinner = function() {
+  $(".loading-spinner").hide();
+  $(".load-hidden").show();
+};
+
+var showSpinner = function () {
+  $(".loading-spinner").show();
+  $(".load-hidden").hide();
+};
 
 var getOptions = function() {
   var category1 = $("#category1").val();
@@ -12,21 +21,15 @@ var getOptions = function() {
 }
 
 var getUrlFor = function(options) {
-  return "/intersection/?category1=" + options.category1 + "&category2=" + options.category2 + "&category3=" + options.category3;
+  return "/intersection?category1=" + options.category1 + "&category2=" + options.category2 + "&category3=" + options.category3;
 };
 
 var fieldDropdownChange = function() {
   var options = getOptions();
   var url = getUrlFor(options);
 
-  console.info(url);
-
-
+  showSpinner();
+  axios.get(url).then(hideSpinner);
 }
-
-var hideSpinner = function() {
-  $(".loading-spinner").hide();
-  $(".load-hidden").show();
-};
 
 hideSpinner();
