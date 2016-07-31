@@ -25,13 +25,12 @@ def gen_nodes(studies, prop, equality, matches):
 
 
 def gen_node(study, studies, prop, equality, matches):
-    return {
-        "id": study["id"],
-        "name": study["name"] if "name" in study else "",
-        "title": get_title(study, prop),
-        "edges": gen_edges(study, studies, prop, equality, matches),
-        "color": "#4582ec"
-    }
+    if "name" not in study:
+        study["name"] = ""
+    study["title"] = get_title(study, prop)
+    study["edges"] = gen_edges(study, studies, prop, equality, matches)
+    study["color"] = "#4582ec"
+    return study
 
 
 def get_title(study, prop):
