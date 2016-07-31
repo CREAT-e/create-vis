@@ -34,7 +34,7 @@ function handleFilterBtnClick() {
         if (key in node) {
             var val = node[key];
             if ($.isArray(val)) {
-                return value in val;
+                return $.inArray(value, val);
             } else if (!isNaN(val)) {
                 return Number(value) == val;
             }
