@@ -20,50 +20,50 @@ def assign_study_ids(studies):
     return studies
 
 
-def gen_nodes(studies):
-    return [gen_node(s, studies) for s in studies]
+def gen_nodes(studies, prop):
+    return [gen_node(s, studies, prop) for s in studies]
 
 
-def gen_node(study, studies):
+def gen_node(study, studies, prop):
     return {
         "id": study["id"],
         "name": study["name"] if "name" in study else "",
-        "title": get_title(study),
-        "edges": gen_edges(study, studies),
+        "title": get_title(study, prop),
+        "edges": gen_edges(study, studies, prop),
         "color": "#4582ec"
     }
 
 
-def get_title(study):
+def get_title(study, prop):
     title = "<strong>Title: </strong>" + study["title"]
     if "references" in study:
         title += "<br>"
-        title += "<strong>References:</strong>"
+        title += "<strong>" + prop + ":</strong>"
         title += "<br>"
-        for ref in study["references"]:
+        for ref in study[prop]:
             title += ref + "<br>"
     return title
 
 
-def get_nodes(filter_no_edges=True):
+def get_nodes(prop, filter_no_edges=True):
     studies = get_studies()
-    nodes = gen_nodes(studies)
+    nodes = gen_nodes(studies, prop)
     if filter_no_edges:
         return list(filter(lambda n: len(n["edges"]) > 0, nodes))
     return nodes
 
 
-def gen_edges(study, studies):
-    if "references" not in study:
+def gen_edges(study, studies, prop):
+    if prop not in study:
         return []
     edges = []
     for other_study in studies:
         if study == other_study:
             continue
-        if "references" not in other_study:
+        if prop not in other_study:
             continue
-        refs = study["references"]
-        other_refs = other_study["references"]
+        refs = study[prop]
+        other_refs = other_study[prop]
         if set(refs) & set(other_refs):
             edges.append({
                 "from": study["id"],
@@ -89,9 +89,9 @@ def get_edges(nodes, filter_circular=True):
     return edges
 
 
-@ref_network.route("/nodes")
-def network_nodes():
-    nodes = get_nodes()
+@ref_network.route("/nodes/<prop>")
+def network_nodes(prop):
+    nodes = get_nodes(prop)
     edges = get_edges(nodes)
     return jsonify({
         "nodes": nodes,

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    axios.get("/refnetwork/nodes")
+    axios.get("/refnetwork/nodes/references")
         .then(function(response) {
             var graph = response.data;
 
