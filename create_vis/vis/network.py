@@ -68,7 +68,7 @@ def gen_edges(study, studies, prop, equality, matches):
             continue
         x = study[prop]
         y = other_study[prop]
-        if equality:
+        if equality or not isinstance(x, list):
             if x == y:
                 edges.append({
                     "from": study["id"],
