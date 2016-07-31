@@ -3,6 +3,13 @@ from flask import Blueprint, jsonify, current_app, abort, request
 
 intersection = Blueprint("intersection", __name__)
 
+def get_all_studies():
+    base = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
+    studies_response = requests.get(base + "/studies")
+    print(studies_response)
+
+    return studies_response.json()["studies"]
+
 
 def get_valid_values(category):
     base = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
@@ -11,15 +18,6 @@ def get_valid_values(category):
 
     field_values = values_response.json()["values"]
     return field_values
-
-def make_filter(category1, cat_val1, category2, cat_val2, category3, cat_val3):
-    cat_val1 = category1.replace(",", "\,")
-    cat_val2 = category1.replace(",", "\,")
-    cat_val3 = category1.replace(",", "\,")
-
-    blah = [category1,":", cat_val1, ",", category2, ":", ",", category3, ":", cat_val3].join()
-
-    return "filter=" + blah
 
 
 @intersection.route("/intersection")
@@ -32,9 +30,11 @@ def intersections():
     cat2_vals = get_valid_values(category2)
     cat3_vals = get_valid_values(category3)
 
-    print(cat1_vals)
-    print(cat2_vals)
-    print(cat3_vals)
+    all_studies = get_all_studies()
 
+    for cat1_val in cat1_vals:
+        for cat2_val in cat2_vals:
+            for cat3_val in cat3_vals:
+                a = 1 + 1
 
     return jsonify({'results' : []})
