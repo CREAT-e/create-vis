@@ -10,8 +10,24 @@ def get_all_studies():
 
     return studies_response.json()["studies"]
 
-def count_studies_matching(studies, x, y, z):
-    return 0
+def study_has_value(study, field, val):
+    value = study.get(field)
+    if value:
+        if isinstance(value, list):
+            return val in value
+        else:
+            return value == val
+
+
+def count_studies_matching(studies, cat1, cat2, cat3, x, y, z):
+    count = 0
+
+    for study in studies:
+        if study_has_value(study, cat1, x) and study_has_value(study, cat2, y) and study_has_value(study, cat3, z):
+            count = count + 1
+
+    return count
+
 
 
 def get_valid_values(category):
@@ -39,6 +55,8 @@ def intersections():
     for cat1_val in cat1_vals:
         for cat2_val in cat2_vals:
             for cat3_val in cat3_vals:
-                data_obj = {'x' : cat1_val, 'y': cat2_val, 'z': cat3_val}
+                count = count_studies_matching(all_studies, category1, category2, category3, cat1_val, cat2_val, cat3_val)
+                data_obj = {'x' : cat1_val, 'y': cat2_val, 'z': cat3_val, 'count': count}
+                data.append(data_obj)
 
-    return jsonify({'results' : []})
+    return jsonify({'results' : data})
