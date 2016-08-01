@@ -181,6 +181,7 @@ var applyChartTypeConfig = function(type, data, opts, field, value, aggregateOn)
 
       if (datasets && datasets[0]) {
         var dataset = datasets[0];
+        datasets[0]["label"] = createChartTitle(field, value, aggregateOn);
         dataset["backgroundColor"] = "rgba(255,255,255,0)";
         dataset["borderColor"] = randomColor();
       };
