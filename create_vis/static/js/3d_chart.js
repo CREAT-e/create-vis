@@ -50,21 +50,19 @@ var drawChart = function(data) {
   var options = {
     width:  '600px',
     height: '600px',
-    style: 'dot-size',
+    style: 'dot-color',
     xValueLabel: xLabelFunc,
     yValueLabel: yLabelFunc,
     zValueLabel: zLabelFunc,
     showPerspective: false,
     showGrid: true,
     keepAspectRatio: true,
-    legendLabel:'value',
     verticalRatio: 1.0,
     cameraPosition: {
       horizontal: -0.54,
       vertical: 0.5,
       distance: 1.6
-    }
-  };
+    }  };
 
   var container = document.getElementById('3d_graph');
 
