@@ -142,7 +142,7 @@ var getLabelsAndValues = function(httpResult) {
  * Applies chart type specific config to the chart data by expanding it
  * or replacing values.
 */
-var applyChartTypeConfig = function(type, data, opts) {
+var applyChartTypeConfig = function(type, data, opts, field, value, aggregateOn) {
 
   var lineWrapLabels = function(labels) {
     return data.labels.map(function(label) {
@@ -150,22 +150,38 @@ var applyChartTypeConfig = function(type, data, opts) {
     });
   }
 
+  var datasets = data['datasets'];
+
   switch (type) {
+    case "doughnut":
     case "pie" :
+      break;
+    case 'horizontalBar':
+      opts.title.display = false;
+
+      if (datasets && datasets[0]) {
+        datasets[0]["label"] = createChartTitle(field, value, aggregateOn);
+      }
+
       break;
     case 'bar':
       opts.title.display = false;
+
+      if (datasets && datasets[0]) {
+        datasets[0]["label"] = createChartTitle(field, value, aggregateOn);
+      }
+
       // For long labels, this puts each new word on a new line
       data.labels = lineWrapLabels(data.labels);
       break;
     case "line" :
-      var datasets = data['datasets'];
       data.labels = lineWrapLabels(data.labels);
       opts.title.display = false;
 
 
       if (datasets && datasets[0]) {
         var dataset = datasets[0];
+        datasets[0]["label"] = createChartTitle(field, value, aggregateOn);
         dataset["backgroundColor"] = "rgba(255,255,255,0)";
         dataset["borderColor"] = randomColor();
       };
@@ -295,7 +311,6 @@ var renderChart = function(chartType, data, field, value, aggregateOn) {
   var chartData = {
     labels: keys,
     datasets: [{
-      label: createChartTitle(field, value, aggregateOn),
       data: values,
       backgroundColor: labelColors
     }]
@@ -308,7 +323,7 @@ var renderChart = function(chartType, data, field, value, aggregateOn) {
     }
   };
 
-  applyChartTypeConfig(chartType, chartData, opts);
+  applyChartTypeConfig(chartType, chartData, opts, field, value, aggregateOn);
 
   if (keys && keys.length > 0) {
     myChart = new Chart(ctx, {
