@@ -151,7 +151,11 @@ var applyChartTypeConfig = function(type, data, opts) {
   }
 
   switch (type) {
+    case "doughnut":
     case "pie" :
+      break;
+    case 'horizontalBar':
+      opts.title.display = false;
       break;
     case 'bar':
       opts.title.display = false;
