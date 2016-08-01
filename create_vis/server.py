@@ -19,6 +19,10 @@ def get_properties():
     except requests.RequestException:
         abort(500)
 
+def get_aggregatable_properties():
+    url = app.config["COPYRIGHT_EVIDENCE_API_URL"] + "/aggregatable_properties"
+    response = requests.get(url)
+    return response.json()["properties"]
 
 @app.route("/")
 def index():
@@ -32,13 +36,13 @@ def about():
 
 @app.route("/3d_chart")
 def three_dimensional_chart():
-    props = get_properties()
+    props = get_aggregatable_properties()
+    props.sort()
     return render_template("three_dimensional.html", properties=props)
 
 @app.route("/chart")
 def chart():
     api_url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
-    properties = get_properties()
 
     response = requests.get(api_url + "/aggregatable_properties")
     properties = response.json()["properties"]
