@@ -22,21 +22,58 @@ var getOptions = function() {
 
 var drawChart = function(data) {
 
+  var results = data.results;
+
+  var dataset = new vis.DataSet();
+
+  results.forEach(function(d) {
+    dataset.add(d);
+  });
+
+  var xLabels = data.xLabels;
+  var yLabels = data.yLabels;
+  var zLabels = data.zLabels;
+
+  var xLabelFunc = function(idx) {
+    return xLabels[idx];
+  };
+
+  var yLabelFunc = function(idy) {
+    return yLabels[idy];
+  };
+
+  var zLabelFunc = function(idz) {
+    return zLabels[idz];
+  };
+
   // specify options
   var options = {
     width:  '600px',
     height: '600px',
-    style: 'dot-size'
+    style: 'dot-size',
+    xValueLabel: xLabelFunc,
+    yValueLabel: yLabelFunc,
+    zValueLabel: zLabelFunc,
+    showPerspective: false,
+    showGrid: true,
+    keepAspectRatio: true,
+    legendLabel:'value',
+    verticalRatio: 1.0,
+    cameraPosition: {
+      horizontal: -0.54,
+      vertical: 0.5,
+      distance: 1.6
+    }
   };
 
   var container = document.getElementById('3d_graph');
 
-  graph3d = new vis.Graph3d(container, data, options);
+  var graph3d = new vis.Graph3d(container, dataset, options);
   //console.dir(graph3d);
 };
 
 var getData = function(response) {
-    return response.data.results;
+    return response.data;
 }
 
 var getUrlFor = function(options) {

@@ -52,11 +52,11 @@ def intersections():
 
     all_studies = get_all_studies()
 
-    for cat1_val in cat1_vals:
-        for cat2_val in cat2_vals:
-            for cat3_val in cat3_vals:
+    for idx, cat1_val in enumerate(cat1_vals):
+        for idy, cat2_val in enumerate(cat2_vals):
+            for idz, cat3_val in enumerate(cat3_vals):
                 count = count_studies_matching(all_studies, category1, category2, category3, cat1_val, cat2_val, cat3_val)
-                data_obj = {'x' : cat1_val, 'y': cat2_val, 'z': cat3_val, 'style': count}
+                data_obj = {'x' : idx, 'y': idy, 'z': idz, 'style': count}
                 data.append(data_obj)
 
     data.sort(key=lambda a : a['style'], reverse=True)
@@ -64,4 +64,4 @@ def intersections():
 
     data = data[:20]
 
-    return jsonify({'results' : data})
+    return jsonify({'results' : data, "xLabels": cat1_vals, "yLabels": cat2_vals, "zLabels": cat3_vals })
