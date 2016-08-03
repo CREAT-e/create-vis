@@ -349,14 +349,6 @@ String.prototype.replaceAll = function(search, replacement) {
 
 window.onload = function () {
   changeChart();
-
-  window.onpopstate = function(e){
-    if(e.state){
-        // Go to the URL we stored when manipulating the drop down options
-        location.reload();
-    }
-};
-
 };
 
 
