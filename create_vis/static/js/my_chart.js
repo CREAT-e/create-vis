@@ -18,6 +18,11 @@ function stopLoading() {
 var getSelectedOptions = function() {
   var field = $("#field").val();
   var value = $("#value").val();
+
+  if (!value) {
+    var aggregateOn = $("#aggregate_on").val(field);
+  }
+
   var aggregateOn = $("#aggregate_on").val();
   var chartType = $("#chart_type").val();
 
