@@ -47,16 +47,14 @@ function handleFilterBtnClick() {
 
     var property = $("#sel-property").val();
     var matches = $("#sel-matches").val();
-    generateGraph(property, matches, filter)
-        .then(stopLoading);
+    generateGraph(property, matches, filter);
 }
 
 function handleViewButtonClick() {
     startLoading();
     var property = $("#sel-property").val();
     var matches = $("#sel-matches").val();
-    generateGraph(property, matches)
-        .then(stopLoading);
+    generateGraph(property, matches);
 }
 
 function generateGraph(property, matches, filter) {
@@ -144,16 +142,20 @@ function createGraph(response, filter) {
             window.open(url);
         }
     });
+
+    network.once("afterDrawing", function(params) {
+        stopLoading();
+    });
 }
 
 function startLoading() {
     $(".loading-spinner").show();
-    $(".load-hidden").hide();
+    $(".load-hidden").css("visibility", "hidden")
 }
 
 function stopLoading() {
     $(".loading-spinner").hide();
-    $(".load-hidden").show();
+    $(".load-hidden").css("visibility", "visible");
 }
 
 function getNode(id, nodes) {

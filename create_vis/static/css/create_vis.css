@@ -52,5 +52,5 @@ body {
 }
 
 .load-hidden {
-    display: none;
+    visibility: hidden;
 }
