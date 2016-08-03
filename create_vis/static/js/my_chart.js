@@ -5,15 +5,15 @@ var fieldDropdownChange = function(sel) {
   window.location.replace("/chart?field=" + value);
 };
 
-var hideSpinner = function() {
-  $(".loading-spinner").hide();
-  $(".load-hidden").show();
-};
+function startLoading() {
+    $(".loading-spinner").show();
+    $(".load-hidden").css("visibility", "hidden")
+}
 
-var showSpinner = function () {
-  $(".loading-spinner").show();
-  $(".load-hidden").hide();
-};
+function stopLoading() {
+    $(".loading-spinner").hide();
+    $(".load-hidden").css("visibility", "visible");
+}
 
 var getSelectedOptions = function() {
   var field = $("#field").val();
@@ -48,12 +48,12 @@ var changeChart = function(sel) {
     return applySortAndMaxResults(data, options.sortBy, options.maxResults)
   }
 
-  showSpinner();
+  startLoading();
   axios.get(url)
     .then(getLabelsAndValues)
     .then(sortAndTrim)
     .then(function(data) {
-      hideSpinner();
+      stopLoading();
       renderChart(options.chartType, data, options.field,
                   options.value, options.aggregateOn);
 
@@ -353,4 +353,4 @@ window.onload = function () {
 
 
 
-hideSpinner();
+stopLoading();
