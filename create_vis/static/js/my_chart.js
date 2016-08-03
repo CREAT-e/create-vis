@@ -62,8 +62,15 @@ var changeChart = function(sel) {
 };
 
 var makeUrlFor = function(field, fieldValue, aggregateOn) {
-  var encodedVal = fieldValue.replaceAll(",","\\,");
-  return encodeURI("/studies?filter=" + field + ":" + encodedVal + "&" + "fields=" + aggregateOn);
+
+  var url = encodeURI("/studies?fields=" + aggregateOn);
+
+  if (fieldValue) {
+    var encodedVal = fieldValue.replaceAll(",","\\,");
+    url= url + "&filter=" + field + ":" + encodedVal;
+  }
+
+  return url;
 };
 
 var incCount = function(counts, value) {
@@ -300,7 +307,13 @@ var createChartTitle = function(field, value, aggregateOn) {
   var val = toTitleCase(removeUnderscores(value));
   var agg = toTitleCase(removeUnderscores(aggregateOn));
 
-  return val.trim() + " by " + agg;
+  if (value) {
+    return val.trim() + " by " + agg;
+  }
+  else {
+    return agg;
+  }
+
 }
 
 var renderChart = function(chartType, data, field, value, aggregateOn) {

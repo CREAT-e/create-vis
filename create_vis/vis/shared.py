@@ -14,10 +14,17 @@ def filtered_studies():
     filter_param = request.args.get("filter")
     fields_param = request.args.get("fields")
 
-    base = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
-    url = base + "/studies?filter=" + filter_param + "&fields=" + fields_param
+    base = current_app.config["COPYRIGHT_EVIDENCE_API_URL"] + "/studies"
+
+    query_params = {}
+    if filter_param:
+        query_params['filter'] = filter_param
+
+    if fields_param:
+        query_params['fields'] = fields_param
+
     try:
-        response = requests.get(url)
+        response = requests.get(base, params=query_params)
         response_json = response.json()
         return jsonify(response_json)
     except requests.RequestException:

@@ -49,7 +49,7 @@ def chart_test():
         value = "Software publishing (including video games)"
 
     if not aggregate_on:
-        aggregate_on="evidence_based_policy"
+        aggregate_on = "evidence_based_policy"
 
     values_response = requests.get(api_url + "/values?field=" + field)
     field_values = values_response.json()["values"]
