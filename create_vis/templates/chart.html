@@ -37,7 +37,7 @@
               <select id="value" class="form-control" onchange="changeChart(this);">
                   {% for val in values %}
 
-                  {% if default_value and val == default_value %}
+                  {% if val == current_value %}
                     <option selected value="{{ val }}"> {{ val }}</option>
                   {% else %}
                     <option value="{{ val }}"> {{ val }}</option>
@@ -51,7 +51,7 @@
                 <select id="aggregate_on" onchange="changeChart(this)" class="form-control">
                     {% for val in properties %}
 
-                    {% if default_aggregate and val == default_aggregate %}
+                    {% if val == current_aggregate_on %}
                       <option selected value="{{ val }}"> {{ val }}</option>
                     {% else %}
                       <option value="{{ val }}"> {{ val }}</option>

@@ -39,14 +39,17 @@ def chart_test():
         properties.sort()
 
     field = request.args.get('field')
+    value = request.args.get('value')
+    aggregate_on = request.args.get('aggregate_on')
 
-    default_value = ""
-    default_aggregate = ""
     if not field:
-        # TODO: Make configurable via config file
         field = "industry"
-        default_value = "Software publishing (including video games)"
-        default_aggregate = "evidence_based_policy"
+
+    if not value:
+        value = "Software publishing (including video games)"
+
+    if not aggregate_on:
+        aggregate_on="evidence_based_policy"
 
     values_response = requests.get(api_url + "/values?field=" + field)
     field_values = values_response.json()["values"]
@@ -58,8 +61,8 @@ def chart_test():
                            properties=properties,
                            values=field_values,
                            current_field=field,
-                           default_value=default_value,
-                           default_aggregate=default_aggregate)
+                           current_value=value,
+                           current_aggregate_on=aggregate_on)
 
 
 @app.route("/network")

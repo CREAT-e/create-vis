@@ -34,6 +34,11 @@ var getSelectedOptions = function() {
   }
 }
 
+var addPageToHistory = function(options) {
+  window.history.pushState({},
+   '', '/chart?field='+options.field + "&value="+options.value +"&aggregateOn="+options.aggregateOn);
+};
+
 var changeChart = function(sel) {
   var options = getSelectedOptions();
 
@@ -51,6 +56,8 @@ var changeChart = function(sel) {
       hideSpinner();
       renderChart(options.chartType, data, options.field,
                   options.value, options.aggregateOn);
+
+      addPageToHistory(options);
   });
 };
 
@@ -340,5 +347,18 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-window.onload = changeChart;
+window.onload = function () {
+  changeChart();
+
+  window.onpopstate = function(e){
+    if(e.state){
+        // Go to the URL we stored when manipulating the drop down options
+        location.reload();
+    }
+};
+
+};
+
+
+
 hideSpinner();
