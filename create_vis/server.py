@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, abort
 from logger import init_logger
-from vis.intersection import intersection
 from vis.network import network
 from vis.shared import shared
 import requests
