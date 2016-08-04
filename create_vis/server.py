@@ -1,10 +1,14 @@
-from flask import Flask, render_template, request, current_app
+from flask import Flask, render_template, request, abort
+from logger import init_logger
+from vis.intersection import intersection
 from vis.network import network
 from vis.shared import shared
 import requests
 
 app = Flask(__name__)
 app.config.from_envvar("CREATE_VIS_CFG")
+init_logger(app)
+
 app.register_blueprint(network, url_prefix="/network")
 app.register_blueprint(shared)
 
@@ -20,17 +24,20 @@ def get_properties():
 
 @app.route("/")
 def index():
+    app.logger.info("/")
     return render_template("index.html")
 
 
 @app.route("/about")
 def about():
+    app.logger.info("/about")
     return render_template("about.html")
 
 
 @app.route("/chart")
-def chart_test():
-    api_url = current_app.config["COPYRIGHT_EVIDENCE_API_URL"]
+def chart():
+    app.logger.info("/chart")
+    api_url = app.config["COPYRIGHT_EVIDENCE_API_URL"]
 
     response = requests.get(api_url + "/aggregatable_properties")
     properties = response.json()["properties"]
@@ -49,7 +56,7 @@ def chart_test():
         value = "Software publishing (including video games)"
 
     if not aggregate_on:
-        aggregate_on="evidence_based_policy"
+        aggregate_on = "evidence_based_policy"
 
     values_response = requests.get(api_url + "/values?field=" + field)
     field_values = values_response.json()["values"]
@@ -67,6 +74,7 @@ def chart_test():
 
 @app.route("/network")
 def ref_network():
+    app.logger.info("/network")
     blacklist = [
         "comparative",
         "cross_country",
@@ -78,6 +86,13 @@ def ref_network():
     properties = [p for p in get_properties() if p not in blacklist]
     properties.sort()
     return render_template("network.html", properties=properties)
+
+
+@app.errorhandler(Exception)
+def unhandled_exception(e):
+    """Log unexcepted exceptions."""
+    app.logger.error("Unhandled exception: %s", (e))
+    return abort(500)
 
 
 if __name__ == "__main__":
