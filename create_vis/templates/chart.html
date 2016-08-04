@@ -33,8 +33,9 @@
                 </select>
             </div>
             <div class="control">
-              <label for="value">Values</label>
+              <label for="value">Filter on</label>
               <select id="value" class="form-control" onchange="changeChart(this);">
+                  <option value="">None</option>
                   {% for val in values %}
 
                   {% if val == current_value %}

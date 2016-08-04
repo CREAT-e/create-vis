@@ -5,19 +5,24 @@ var fieldDropdownChange = function(sel) {
   window.location.replace("/chart?field=" + value);
 };
 
-var hideSpinner = function() {
-  $(".loading-spinner").hide();
-  $(".load-hidden").show();
-};
+function startLoading() {
+    $(".loading-spinner").show();
+    $(".load-hidden").css("visibility", "hidden")
+}
 
-var showSpinner = function () {
-  $(".loading-spinner").show();
-  $(".load-hidden").hide();
-};
+function stopLoading() {
+    $(".loading-spinner").hide();
+    $(".load-hidden").css("visibility", "visible");
+}
 
 var getSelectedOptions = function() {
   var field = $("#field").val();
   var value = $("#value").val();
+
+  if (!value) {
+    var aggregateOn = $("#aggregate_on").val(field);
+  }
+
   var aggregateOn = $("#aggregate_on").val();
   var chartType = $("#chart_type").val();
 
@@ -48,12 +53,12 @@ var changeChart = function(sel) {
     return applySortAndMaxResults(data, options.sortBy, options.maxResults)
   }
 
-  showSpinner();
+  startLoading();
   axios.get(url)
     .then(getLabelsAndValues)
     .then(sortAndTrim)
     .then(function(data) {
-      hideSpinner();
+      stopLoading();
       renderChart(options.chartType, data, options.field,
                   options.value, options.aggregateOn);
 
@@ -62,8 +67,15 @@ var changeChart = function(sel) {
 };
 
 var makeUrlFor = function(field, fieldValue, aggregateOn) {
-  var encodedVal = fieldValue.replaceAll(",","\\,");
-  return encodeURI("/studies?filter=" + field + ":" + encodedVal + "&" + "fields=" + aggregateOn);
+
+  var url = encodeURI("/studies?fields=" + aggregateOn);
+
+  if (fieldValue) {
+    var encodedVal = fieldValue.replaceAll(",","\\,");
+    url= url + "&filter=" + field + ":" + encodedVal;
+  }
+
+  return url;
 };
 
 var incCount = function(counts, value) {
@@ -300,7 +312,13 @@ var createChartTitle = function(field, value, aggregateOn) {
   var val = toTitleCase(removeUnderscores(value));
   var agg = toTitleCase(removeUnderscores(aggregateOn));
 
-  return val.trim() + " by " + agg;
+  if (value) {
+    return val.trim() + " by " + agg;
+  }
+  else {
+    return agg;
+  }
+
 }
 
 var renderChart = function(chartType, data, field, value, aggregateOn) {
@@ -349,16 +367,8 @@ String.prototype.replaceAll = function(search, replacement) {
 
 window.onload = function () {
   changeChart();
-
-  window.onpopstate = function(e){
-    if(e.state){
-        // Go to the URL we stored when manipulating the drop down options
-        location.reload();
-    }
-};
-
 };
 
 
 
-hideSpinner();
+stopLoading();
