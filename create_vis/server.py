@@ -1,15 +1,20 @@
 from flask import Flask, render_template, request, abort
-from logger import init_logger
 from vis.network import network
 from vis.shared import shared
 import requests
+import logging
 
 app = Flask(__name__)
 app.config.from_envvar("CREATE_VIS_CFG")
-init_logger(app)
-
 app.register_blueprint(network, url_prefix="/network")
 app.register_blueprint(shared)
+
+
+@app.before_first_request
+def setup_logging():
+    if not app.debug:
+        app.logger.addHandler(logging.StreamHandler())
+        app.logger.setLevel(logging.INFO)
 
 
 def get_properties():
