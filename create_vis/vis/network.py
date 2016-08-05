@@ -29,7 +29,6 @@ def gen_node(study, studies, prop, equality, matches):
         study["name"] = ""
     study["title"] = get_title(study, prop)
     study["edges"] = gen_edges(study, studies, prop, equality, matches)
-    study["color"] = "#4582ec"
     return study
 
 

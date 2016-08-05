@@ -1,13 +1,20 @@
-var dataSet;
-var network;
-
 $(document).ready(function() {
     $("#viewBtn").on("click", handleViewButtonClick);
     $("#filterBtn").on("click", handleFilterBtnClick);
+    $("#advancedOptionsBtn").on("click", handleAdvancedOptionsBtnClick);
     $("#sel-property option:contains('references')").prop("selected", true);
     $("#sel-matches option:contains('1 Match')").prop("selected", true);
     $("#viewBtn").click();
 });
+
+function handleAdvancedOptionsBtnClick() {
+    var el = $("#network-configuration");
+    if (el.is(":visible")) {
+        el.hide();
+    } else {
+        el.show();
+    }
+}
 
 function handleFilterBtnClick() {
     startLoading();
@@ -90,7 +97,7 @@ function createGraph(response, filter) {
         graph.nodes = graph.nodes.filter(filter);
     }
 
-    dataSet = {
+    var dataSet = {
         nodes: new vis.DataSet(graph.nodes),
         edges: new vis.DataSet(graph.edges)
     };
@@ -98,6 +105,9 @@ function createGraph(response, filter) {
     var options = {
         nodes: {
             shape: 'dot',
+            color: {
+                background: "#4582EC",
+            },
             scaling: {
                 min: 10,
                 max: 30
@@ -127,11 +137,17 @@ function createGraph(response, filter) {
         interaction: {
             tooltipDelay: 100,
             hideEdgesOnDrag: true
+        },
+        configure: {
+            enabled: true,
+            container: document.getElementById("network-configuration"),
+            filter: "nodes,edges,physics",
+            showButton: false
         }
     };
 
     var container = document.getElementById("vis");
-    network = new vis.Network(container, dataSet, options);
+    var network = new vis.Network(container, dataSet, options);
     network.fit();
     network.on("selectNode", function (params) {
         var id = params.nodes[0];

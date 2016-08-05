@@ -3,8 +3,9 @@
 {% block title %}Reference Network | CREATe Visualisations{% endblock %}
 {% block description %}A network visualisation of CREATe copyright evidence studies.{% endblock %}
 
-{% block heading %}
-Network Visualisations
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/network.css') }}">
 {% endblock %}
 
 {% block controls %}
@@ -53,10 +54,21 @@ Network Visualisations
 </div>
 
 <hr>
-{% endblock %}
 
-{% block explanation %}
-Select the join condition for the studies.
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <button class="btn btn-sm btn-primary"
+                id="advancedOptionsBtn"
+                title="Advanced Options">
+            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            Advanced Options
+        </button>
+
+        <div id="network-configuration"></div>
+    </div>
+</div>
+
+<hr>
 {% endblock %}
 
 {% block js %}
