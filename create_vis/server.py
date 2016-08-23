@@ -51,7 +51,7 @@ def chart():
 
     field = request.args.get('field')
     value = request.args.get('value')
-    aggregate_on = request.args.get('aggregate_on')
+    aggregate_on = request.args.get('aggregateOn')
 
     if not field:
         field = "industry"
