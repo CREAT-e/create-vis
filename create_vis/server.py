@@ -38,6 +38,13 @@ def about():
     return render_template("about.html")
 
 
+@app.route("/status")
+def server_status():
+    url = app.config["COPYRIGHT_EVIDENCE_API_URL"] + "/status"
+    status_info = requests.get(url).json()
+    return render_template("status.html", status=status_info)
+
+
 @app.route("/chart")
 def chart():
     app.logger.info("/chart")

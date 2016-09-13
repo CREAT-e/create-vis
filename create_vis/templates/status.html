@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}CREATe Visualisations{% endblock %}
+{% block description %}Data visualisations of the CREATe copyright evidence wiki.{% endblock %}
+
+{% block content %}
+<p> Number of studies in the collection: {{ status["study_count"] }} </p>
+<p> Data last successfully update: {{status["last_updated"]}} </p>
+{% endblock %}
